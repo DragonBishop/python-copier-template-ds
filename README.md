@@ -1,9 +1,9 @@
 # Python Copier Template for Data Science
 
- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![prek](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/j178/prek/master/docs/assets/badge-v0.json)](https://github.com/j178/prek)
 
 This is a template built with [Copier](https://github.com/copier-org/copier) to generate a data science focused python project.
 
@@ -78,16 +78,22 @@ In addition, the following rules are only enforced for module code as they are i
 
 The target line length is 120 and the docstring convention is google.
 
-### [pre-commit](https://github.com/pre-commit/pre-commit)
+### [prek](https://github.com/j178/prek) and [pre-commit](https://github.com/pre-commit/pre-commit)
 
-pre-commit is a tool that runs checks on your files before you commit them with git, thereby helping ensure code quality.
-Enable it with the following command:
+`prek` and `pre-commit` are tools that run checks on your files before you commit them with git, thereby helping ensure code quality.
+`prek` is faster than `pre-commit` and has more features, including monorepo support.
+
+Depending on your preference, run one of the following commands to set up.
+
+```shell
+prek install --prepare-hooks
+```
 
 ```shell
 pre-commit install --install-hooks
 ```
 
-The configuration is stored in `.pre-commit-config.yaml`.
+The configuration for both is stored in `.pre-commit-config.yaml`.
 
 ### [nbwipers](https://github.com/felixgwilliams/nbwipers)
 

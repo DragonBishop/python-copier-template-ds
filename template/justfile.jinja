@@ -11,10 +11,10 @@ setup: install git-setup
 install:
   {% raw %}{{if path_exists("uv.lock") != "true" {"uv sync --all-groups --all-extras --inexact"} else {"uv sync --all-groups --all-extras --locked --inexact"} }}{% endraw %}
 
-# ensure code quality before git commit via pre-commit and nbwipers
+# ensure code quality before git commit via {% if use_prek %}prek{% else %}pre-commit{% endif %} and nbwipers
 git-setup: install
   uv run nbwipers install local
-  uv run pre-commit install --install-hooks
+  {% if use_prek %}uv run prek install --prepare-hooks{% else %}uv run pre-commit install --install-hooks{% endif %}
 
 # run test coverage and create
 test-cov:

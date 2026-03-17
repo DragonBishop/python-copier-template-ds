@@ -5,3 +5,6 @@ project_name = "ctt-test"
 
 [output.".ctt/ga"]
 github_actions = true
+
+[output.".ctt/no-prek"]
+use_prek = false

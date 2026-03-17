@@ -17,3 +17,8 @@ github_actions:
   type: bool
   help: Add github actions
   default: false
+
+use_prek:
+  type: bool
+  help: Use prek instead of pre-commit
+  default: true

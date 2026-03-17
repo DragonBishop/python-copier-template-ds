@@ -8,10 +8,10 @@ repos:
     -   id: check-added-large-files
     -   id: check-merge-conflict
 -   repo: https://github.com/crate-ci/typos
-    rev: v1.36.2
+    rev: v1.44.0
     hooks:
     -   id: typos
 -   repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.18.1
+    rev: v0.21.0
     hooks:
     -   id: markdownlint-cli2
