@@ -60,7 +60,7 @@ target-version = "py{{ python_version|replace('.', '') }}"
 select = ["ALL"]
 ignore = [
   "COM",  # trailing commas are not needed
-  "ERA",  # allow commentted code
+  "ERA",  # allow commented code
   "ISC001",  # conflicts with formatter
   "PTH",  # allow opening files without pathlib
   "TRY003",  # allow exception messages as string literals
@@ -76,18 +76,18 @@ extend-select = [
   "PD007",  # pandas-use-of-dot-ix
   "PD101",  # pandas-nunique-constant-series-check
 ]
-
+# outside the module code, the ruff checks can be less strict
 [tool.ruff.lint.per-file-ignores]
 "!{{module_name}}/**.py" = [
-  "ANN",
-  "D",
-  "S101",
-  "PLR2004",
-  "T20",
-  "EM",
-  "PLR0913",
-  "FBT003",
-  "INP001",
+  "ANN", # type annotations
+  "D", # docstrings
+  "S101", # assertions. needed for unit tests
+  "PLR2004", # magic valuues
+  "T20", # print function
+  "EM", # error messages
+  "PLR0913", # maximum arguments in functions
+  "FBT003", # positional boolean in function calls
+  "INP001", # implicit namespace packages
 ]
 
 [tool.ruff.lint.isort]
