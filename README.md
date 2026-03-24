@@ -116,7 +116,7 @@ You may optionally add a github workflow file which checks the following:
 
 - uses ruff to check files are formatted and linted
 - Runs unit tests and checks coverage
-- Checks any markdown files are formatted with [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2)
+- Checks any markdown files are formatted with [rumdl](https://github.com/rvben/rumdl) or [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2)
 - Checks that all jupyter notebooks are clean
 
 ### [Typos](https://github.com/crate-ci/typos)

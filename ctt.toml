@@ -8,3 +8,10 @@ github_actions = true
 
 [output.".ctt/no-prek"]
 use_prek = false
+
+[output.".ctt/no-rumdl"]
+use_rumdl = false
+
+[output.".ctt/no-rumdl-ga"]
+use_rumdl = false
+github_actions = true

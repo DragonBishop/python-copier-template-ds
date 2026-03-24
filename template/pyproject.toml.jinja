@@ -8,6 +8,18 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[dependency-groups]
+dev = [
+  "nbwipers>=0.6.1",
+  "pytest>=8",
+  "pytest-cov>=7.0.0",
+  {% if use_prek %}"prek>=0.3.6"{% else %}"pre-commit>=4.5.1"{% endif %},
+  "typos>=1.44.2",
+]
+lint = [
+  "ruff>=0.13.0",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -36,6 +48,9 @@ exclude = [
   ".venv",
   "uv.lock",
 ]
+
+[tool.nbwipers]
+strip-kernel-info = true
 
 [tool.ruff]
 line-length = 120
@@ -80,24 +95,15 @@ required-imports = ["from __future__ import annotations"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+{% if use_rumdl %}
+[tool.rumdl]
+disabled-rules = ["MD013"]
 
+[tool.rumdl.MD024]
+siblings-only = true
+{% endif %}
 [tool.typos]
 files.extend-exclude = ["*.ipynb", ".gitignore"]
 
 [tool.uv]
 default-groups = ["dev", "lint"]
-
-[tool.nbwipers]
-strip-kernel-info = true
-
-[dependency-groups]
-dev = [
-  "nbwipers>=0.6.1",
-  "pytest>=8",
-  "pytest-cov>=7.0.0",
-  {% if use_prek %}"prek>=0.3.6"{% else %}"pre-commit>=4.5.1"{% endif %},
-  "typos>=1.44.2",
-]
-lint = [
-  "ruff>=0.13.0",
-]

@@ -20,5 +20,10 @@ github_actions:
 
 use_prek:
   type: bool
-  help: Use prek instead of pre-commit
+  help: Use prek instead of pre-commit for checks
+  default: true
+
+use_rumdl:
+  type: bool
+  help: Use rumdl instead of markdownlint-cli2 for markdown checks
   default: true
