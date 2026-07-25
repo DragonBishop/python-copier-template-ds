@@ -1,7 +1,8 @@
 [defaults]
 project_name = "ctt-test"
 
-[output.".ctt/defaults"]
+[output.".ctt/no-ci"]
+github_actions = false
 
-[output.".ctt/ga"]
+[output.".ctt/ci"]
 github_actions = true

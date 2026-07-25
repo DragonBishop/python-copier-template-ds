@@ -1,7 +1,7 @@
 ---
 name: Documentation Update
 about: Request changes to improve the documentation for this project.
-title: ''
+title: 'Docs: '
 labels: documentation
 assignees: ''
 
@@ -28,7 +28,7 @@ assignees: ''
 
 <!-- 2. Describe what is currently wrong, confusing, or missing below. Copy-paste the text if applicable: -->
 
-**For Maintainer Use — Not Required to Complete**
+**For Maintainer Use — User Completion Not Required**
 
 ### ✨ Proposed Changes
 <!-- What should the documentation say instead? Provide your suggested wording or corrections here. -->

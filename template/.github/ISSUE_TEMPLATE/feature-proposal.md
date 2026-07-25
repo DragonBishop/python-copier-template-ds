@@ -3,7 +3,7 @@ name: Feature Proposal
 about: A practical template for proposing features for a data science project.
 title: 'Proposal: '
 labels: ''
-assignees: DragonBishop
+assignees:
 
 ---
 

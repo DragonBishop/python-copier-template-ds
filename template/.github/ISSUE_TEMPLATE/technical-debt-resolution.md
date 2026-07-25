@@ -1,9 +1,9 @@
 ---
 name: Technical Debt Resolution
-about: Identififies a source of technical debt and proposes a solution
-title: ''
+about: Identifies a source of technical debt and proposes a solution
+title: 'Debt: '
 labels: techdebt
-assignees: DragonBishop
+assignees:
 
 ---
 
@@ -11,8 +11,10 @@ assignees: DragonBishop
 *Briefly describe the liability created, and what risk it creates for the project.*
 - **Context:** 
 - **Risk:** 
+
 ---
-**For Maintainer Use — Not Required to Complete**
+**For Maintainer Use — User Completion Not Required**
+
 ### Resolution
 *What specific steps are required to resolve this debt off and stabilize the code?*
 
@@ -21,6 +23,7 @@ assignees: DragonBishop
 - [ ] 
 
 ---
+
 ### Technical Notes
 *Drop in any relevant file paths, scripts, or links to documentation you will need when you start coding.*
 
