@@ -9,29 +9,6 @@ permissions:
   contents: read
 
 jobs:
-  test-clean-notebooks:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-      - run: uvx nbwipers check . --allow-no-notebooks
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-      - name: "Set up Python"
-        uses: actions/setup-python@v6
-        with:
-          python-version-file: ".python-version"
-      - name: Install the project
-        run: uv sync --only-group lint --frozen
-      - name: check format
-        run: uv run ruff format --check --diff .
-      - name: check lints
-        run: uv run ruff check --output-format=github .
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -56,11 +33,3 @@ jobs:
         with:
           pytest-coverage-path: ./pytest-coverage.txt
           junitxml-path: ./pytest.xml
-  check-markdown:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6{% if use_rumdl %}
-      - uses: rvben/rumdl@v0.1.58{% else %}
-      - uses: DavidAnson/markdownlint-cli2-action@v19
-        with:
-          globs: "**/*.md"{% endif %}

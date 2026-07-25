@@ -10,14 +10,9 @@ dynamic = ["version"]
 
 [dependency-groups]
 dev = [
-  "nbwipers>=0.6.1",
   "pytest>=8",
   "pytest-cov>=7.0.0",
-  {% if use_prek %}"prek>=0.3.6"{% else %}"pre-commit>=4.5.1"{% endif %},
-  "typos>=1.44.2",
-]
-lint = [
-  "ruff>=0.13.0",
+  "nbwipers>=0.6.1",
 ]
 
 [build-system]
@@ -52,58 +47,5 @@ exclude = [
 [tool.nbwipers]
 strip-kernel-info = true
 
-[tool.ruff]
-line-length = 120
-target-version = "py{{ python_version|replace('.', '') }}"
-
-[tool.ruff.lint]
-select = ["ALL"]
-ignore = [
-  "COM",  # trailing commas are not needed
-  "ERA",  # allow commented code
-  "ISC001",  # conflicts with formatter
-  "PTH",  # allow opening files without pathlib
-  "TRY003",  # allow exception messages as string literals
-  "TD",  # allow FIXME messages
-  "FIX",  # allow FIXME messages
-  "RUF002",  # allow ambiguous characters in docstrings
-  "RUF003",  # allow ambiguous characters in comments
-  "PLC0415",  # allow import outside top level
-  "PD",  # most PD rules are not helpful
-]
-extend-select = [
-  "PD002",  # pandas-use-of-inplace-argument
-  "PD007",  # pandas-use-of-dot-ix
-  "PD101",  # pandas-nunique-constant-series-check
-]
-# outside the module code, the ruff checks can be less strict
-[tool.ruff.lint.per-file-ignores]
-"!{{module_name}}/**.py" = [
-  "ANN", # type annotations
-  "D", # docstrings
-  "S101", # assertions. needed for unit tests
-  "PLR2004", # magic valuues
-  "T20", # print function
-  "EM", # error messages
-  "PLR0913", # maximum arguments in functions
-  "FBT003", # positional boolean in function calls
-  "INP001", # implicit namespace packages
-]
-
-[tool.ruff.lint.isort]
-required-imports = ["from __future__ import annotations"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-{% if use_rumdl %}
-[tool.rumdl]
-disabled-rules = ["MD013"]
-
-[tool.rumdl.MD024]
-siblings-only = true
-{% endif %}
-[tool.typos]
-files.extend-exclude = ["*.ipynb", ".gitignore"]
-
 [tool.uv]
-default-groups = ["dev", "lint"]
+default-groups = ["dev"]

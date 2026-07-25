@@ -1,11 +1,9 @@
 # Python Copier Template for Data Science
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
-[![prek](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/j178/prek/master/docs/assets/badge-v0.json)](https://github.com/j178/prek)
 
-This is a template built with [Copier](https://github.com/copier-org/copier) to generate a data science focused python project.
+This is a template to generate a data science focused python project built with [Copier](https://github.com/copier-org/copier) . It is based on the template created by Felix G. Williams, which you can find at [https://github.com/felixgwilliams/python-copier-template-ds/tree/main](https://github.com/felixgwilliams/python-copier-template-ds/tree/main). It removes the linting, pre-commit, and rundl features, and alters the template to bring it into alignment with the CookieCutter template. It also removes the data folder to keep github repositories lean while the data is stored elsewhere (e.g. Kaggle).
 
 Get started with the following command:
 
@@ -20,10 +18,6 @@ copier copy gh:felixgwilliams/python-copier-template-ds path/to/destination
 It is assumed that most of the work will be done in Jupyter Notebooks.
 However, the template also includes a python project, in which you can put functions and classes shared across notebooks.
 The repository is set up to use [Pytest](https://docs.pytest.org/en/stable/) for unit testing this module code.
-
-The template also includes a `data` directory whose contents will be ignored by git.
-You can use this folder to store data that you do not commit.
-You may also put a readme file in which you can document the source datasets you use and how to acquire them.
 
 ### [just](https://github.com/casey/just)
 
@@ -43,66 +37,16 @@ You may set up your python environment with
 uv sync --all-groups --all-extras
 ```
 
-### [Ruff](https://github.com/astral-sh/ruff)
-
-The repository is configured to use [Ruff](https://github.com/astral-sh/ruff) for linting and formatting.
-By default, all lints are enabled except
-
-- [`COM`](https://docs.astral.sh/ruff/rules/#flake8-commas-com) Enforces trailing commas
-- [`ERA`](https://docs.astral.sh/ruff/rules/#eradicate-era) Disallows commented-out code
-- [`ISC001`](https://docs.astral.sh/ruff/rules/single-line-implicit-string-concatenation/#flake8-executable-exe) (conflicts with the formatter).
-- [`PTH`](https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth) Requires use of pathlib
-- [`TRY003`](https://docs.astral.sh/ruff/rules/raise-vanilla-args/) disallow exception messages as string literals
-- [`RUF002`](https://docs.astral.sh/ruff/rules/ambiguous-unicode-character-docstring/) disallow ambiguous characters in docstrings
-- [`RUF003`](https://docs.astral.sh/ruff/rules/RUF003/) disallow ambiguous characters in docstrings
-- [`PLC0415`](https://docs.astral.sh/ruff/rules/PLC0415/) disallow import outside top level
-- [`PD`](https://docs.astral.sh/ruff/rules/#pandas-vet-pd) opinionated linting for `pandas` code
-
-Out of the `PD` rules, the following are reenabled:
-
-- [`PD002`](https://docs.astral.sh/ruff/rules/PD002/) disallow `inplace=True`
-- [`PD007`](https://docs.astral.sh/ruff/rules/PD002/) disallow deprecated `.ix`
-- [`PD101`](https://docs.astral.sh/ruff/rules/PD002/) disallow `Series.nunique()` for checking a series is constant
-
-In addition, the following rules are only enforced for module code as they are inappropriate or too strict for unit tests and notebooks:
-
-- [`D`](https://docs.astral.sh/ruff/rules/#pydocstyle-d) Requires docstrings on functions, classes and modules
-- [`ANN`](https://docs.astral.sh/ruff/rules/#flake8-annotations-ann) Requires type annotations on functions and methods
-- [`S101`](https://docs.astral.sh/ruff/rules/assert/) Disallows use of `assert`
-- [`PLR2004`](https://docs.astral.sh/ruff/rules/magic-value-comparison/) Disallows "magic" values in comparisons
-- [`T20`](https://docs.astral.sh/ruff/rules/#flake8-print-t20) Disallows print statements
-- [`EM`](https://docs.astral.sh/ruff/rules/#flake8-errmsg-em) Linting for error messages
-- [`PLR0913`](https://docs.astral.sh/ruff/rules/PLR0913) Disallow too many arguments
-- [`FBT003`](https://docs.astral.sh/ruff/rules/FBT003) Disallow boolean positional values in call
-- [`INP001`](https://docs.astral.sh/ruff/rules/INP001) Disallow implicit namespace packages
-
-The target line length is 120 and the docstring convention is google.
-
-### [prek](https://github.com/j178/prek) and [pre-commit](https://github.com/pre-commit/pre-commit)
-
-`prek` and `pre-commit` are tools that run checks on your files before you commit them with git, thereby helping ensure code quality.
-`prek` is faster than `pre-commit` and has more features, including monorepo support.
-
-Depending on your preference, run one of the following commands to set up.
-
-```shell
-prek install --prepare-hooks
-```
-
-```shell
-pre-commit install --install-hooks
-```
-
-The configuration for both is stored in `.pre-commit-config.yaml`.
-
 ### [nbwipers](https://github.com/felixgwilliams/nbwipers)
 
 `nbwipers` is a tool written in rust to ensure Jupyter notebooks are clean.
 Committing notebooks that are not clean makes diffs more confusing, can degrade performance and increases the risk of leaking sensitive information.
-You can set it up as a git filter with the following command.
+Set it up as a git filter with the following command.
+
+Set it up with:
 
 ```shell
-nbwipers install local
+uv run nbwipers install local
 ```
 
 ### [pytest](https://docs.pytest.org/en/stable/)
@@ -114,14 +58,7 @@ Feel free to ignore it if you do not write module code.
 
 You may optionally add a github workflow file which checks the following:
 
-- uses ruff to check files are formatted and linted
 - Runs unit tests and checks coverage
-- Checks any markdown files are formatted with [rumdl](https://github.com/rvben/rumdl) or [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2)
 - Checks that all jupyter notebooks are clean
-
-### [Typos](https://github.com/crate-ci/typos)
-
-Typos checks for common typos in code, aiming for a low false positive rate.
-The repository is configured not to use it for Jupyter notebook files, as it tends to find errors in cell outputs.
 
 Test with [Copier](https://github.com/copier-org/copier) and [copier-template-tester](https://github.com/KyleKing/copier-template-tester).

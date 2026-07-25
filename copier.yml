@@ -15,15 +15,5 @@ python_version:
 
 github_actions:
   type: bool
-  help: Add github actions
-  default: false
-
-use_prek:
-  type: bool
-  help: Use prek instead of pre-commit for checks
-  default: true
-
-use_rumdl:
-  type: bool
-  help: Use rumdl instead of markdownlint-cli2 for markdown checks
+  help: Add Github Actions CI?
   default: true
