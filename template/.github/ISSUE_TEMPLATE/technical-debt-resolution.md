@@ -19,8 +19,8 @@ assignees:
 *What specific steps are required to resolve this debt off and stabilize the code?*
 
 **Refactoring Checklist:**
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
 
 ---
 

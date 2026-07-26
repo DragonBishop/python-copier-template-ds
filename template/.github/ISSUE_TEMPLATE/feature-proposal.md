@@ -10,9 +10,9 @@ assignees:
 ### The Objective
 *Explain the rationale or context for the proposal, what needs to happen, and why it matters:*
 
-- **Because:**
+- **Because:** 
 - **I Propose:** 
-- **So That:**
+- **So That:** 
 
 ---
 **For Maintainer Use — Not Required to Complete**
@@ -21,6 +21,7 @@ assignees:
 *What defines this as "Done"?* 
 
 **Data Flow:**
+
 - **Given**
 - **When**
 - **Then**

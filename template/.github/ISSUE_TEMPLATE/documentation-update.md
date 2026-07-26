@@ -7,14 +7,6 @@ assignees: ''
 
 ---
 
----
-name: Documentation Update
-about: Report missing, broken, or outdated documentation.
-title: '[Docs]: '
-labels: documentation
-assignees: ''
----
-
 ### Page Location
 <!-- Provide a URL or the file path to the page that needs an update (e.g., `README.md` or `docs/installation.md`) -->
 
