@@ -16,7 +16,7 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ## Project Overview
 
-*Provide a detailed explanation of the business or research problem. What are the objectives of this data science project? What is the expected impact?*
+*Provide a detailed explanation of the business or research problem. What are the objectives of this analysis? What is the expected impact?*
 
 ## Data Sources
 
@@ -30,24 +30,29 @@ Brief description of the project, its purpose, and the main problem it solves.
 ## Directory Structure
 
 ```text
-├── docs               # Documentation for the project
-├── justfile           # Configuration file for just tool
-├── models             # Trained and serialized models, model predictions, or summaries
-├── notebooks          # Jupyter notebooks
-├── pyproject.toml     # Configuration file for project and dependency management
-├── reports            # Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        # Generated graphics and figures to be used in reporting
-├── src                # Source code for use in this project
-│   ├── data           # Scripts to fetch, clean, or generate data
-│   ├── features       # Scripts to turn raw data into features for modeling
-│   ├── models         # Scripts to train models and generate predictions
-│   └── visualization  # Scripts to create exploratory and results oriented visualizations
-├── tests              # Unit tests and integration tests
-│   ├── __init__.py    # Makes tests a Python package
-│   └── test_example.py # Example test file
-├── {{module_name}}    # Main project module
-│   └── __init__.py    # Makes {{module_name}} a Python package
-└── README.md          # The top-level README for developers using this project.
+├── justfile              # Command runner recipes (setup, tests, etc.)
+├── notebooks             # Jupyter notebooks
+│   ├── data_processing_notebook.ipynb  # Data cleaning and integrity checks
+│   └── data_analysis_notebook.ipynb    # Exploratory analysis and findings
+├── pyproject.toml        # Configuration file for project and dependency management
+├── reports               # Generated analysis and documentation
+│   ├── REPORT.md         # Full write-up: summary, methodology, findings
+│   └── cleaning_log.md   # Running log of data-cleaning decisions
+├── tests                 # Unit tests and integration tests
+│   ├── __init__.py
+│   └── test_example.py
+{% if include_module -%}
+├── src
+│   └── {{module_name}}    # Shared functions/classes used across notebooks (importable package)
+│       ├── __init__.py
+│       ├── data           # Scripts to fetch, clean, or generate data
+│       └── visualization  # Scripts to create exploratory and results-oriented visualizations
+{% else -%}
+├── src
+│   ├── data              # Scripts to fetch, clean, or generate data
+│   └── visualization     # Scripts to create exploratory and results-oriented visualizations
+{% endif -%}
+└── README.md             # The top-level README for developers using this project.
 ```
 
 ## Environment Setup
@@ -85,29 +90,27 @@ poetry shell
 
 ## Usage
 
-*Explain how to run the project. Provide examples of the commands needed to run data pipelines, training scripts, or start up applications/dashboards.*
+*Explain how to run the project.*
 
-```bash
-# Example: Run the data ingestion pipeline
-python src/data/make_dataset.py
-
-# Example: Train the model
-python src/models/train_model.py
-```
+Start with `notebooks/data_processing_notebook.ipynb` to clean and validate the data, logging changes in `reports/cleaning_log.md` as you go.
+Move to `notebooks/data_analysis_notebook.ipynb` for exploratory analysis, then write up findings in `reports/REPORT.md`.
+{% if include_module -%}
+Shared helper functions used across notebooks live in `src/{{module_name}}/` — it installs in editable mode via `uv sync`, so it's importable from notebooks without extra path setup.
+{% else -%}
+Standalone data and visualization scripts live under `src/` (not an installable package — just organized scripts).
+{% endif %}
 
 ## Methodology
 
-*Briefly describe the data science lifecycle for this project:*
+*Briefly describe the data analysis lifecycle for this project:*
 
 1. **Data Cleaning & Preprocessing:** How was the data prepared and cleaned?
 2. **Exploratory Data Analysis (EDA):** What were the key findings and distributions?
-3. **Feature Engineering:** What new features were created or transformed?
-4. **Modeling:** Which algorithms were evaluated? How were hyperparameters tuned?
-5. **Evaluation:** What metrics were used (e.g., RMSE, F1-score, ROC-AUC) to validate the model?
+3. **Evaluation:** What metrics or comparisons were used to validate the findings?
 
 ## Results
 
-*Summarize the final results of the analysis or model. Include key metrics, business insights, and potentially a visual representation (e.g., a link to a confusion matrix or feature importance plot in the `reports/figures` folder).*
+*Summarize the final results of the analysis. Include key metrics, business insights, and potentially a visual representation (e.g., a link to a chart in `reports/`).*
 
 ## Contributing
 

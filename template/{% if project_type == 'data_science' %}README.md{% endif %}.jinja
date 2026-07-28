@@ -1,0 +1,166 @@
+# {{project_name}}
+
+Brief description of the project, its purpose, and the main problem it solves.
+
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Data Sources](#data-sources)
+- [Directory Structure](#directory-structure)
+- [Environment Setup](#environment-setup)
+- [Usage](#usage)
+- [Methodology](#methodology)
+- [Key Insights & Results](#results)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Project Overview
+
+*Provide a detailed explanation of the business or research problem. What are the objectives of this data science project? What is the expected impact?*
+
+## Data Sources
+
+*Describe the data used in this project.*
+
+- **Source 1:** [Link or description]
+- **Source 2:** [Link or description]
+
+> **Note:** Raw or sensitive data should never be committed to the repository. Add data directories to your `.gitignore`.
+
+## Directory Structure
+
+```text
+├── justfile                # Command runner recipes (setup, tests, etc.)
+├── models                  # Trained and serialized models, model predictions, or summaries
+├── notebooks               # Jupyter notebooks
+│   ├── data_processing_notebook.ipynb  # Data cleaning and integrity checks
+│   └── data_analysis_notebook.ipynb    # Exploratory analysis and findings
+├── pyproject.toml          # Configuration file for project and dependency management
+├── reports                 # Generated analysis and documentation
+│   ├── REPORT.md           # Full write-up: summary, methodology, findings
+│   └── cleaning_log.md     # Running log of data-cleaning decisions
+{% if include_module -%}
+├── src
+│   └── {{module_name}}     # Main project module (importable package)
+│       ├── data            # Scripts to fetch, clean, or generate data
+│       ├── features        # Scripts to turn raw data into features for modeling
+│       ├── models          # Scripts to train models and generate predictions
+│       └── visualization   # Scripts to create exploratory and results-oriented visualizations
+{% else -%}
+├── src
+│   ├── data                # Scripts to fetch, clean, or generate data
+│   ├── features            # Scripts to turn raw data into features for modeling
+│   ├── models              # Scripts to train models and generate predictions
+│   └── visualization       # Scripts to create exploratory and results-oriented visualizations
+{% endif -%}
+├── tests                   # Unit tests and integration tests
+│   ├── __init__.py
+│   └── test_example.py
+└── README.md               # The top-level README for developers using this project.
+```
+
+## Environment Setup
+
+*Instructions on how to set up the isolated computational environment to run the analysis scripts. Choose the package manager that fits your workflow.*
+
+```bash
+# Clone the repository
+git clone https://github.com/username/{{project_name}}.git
+cd {{project_name}}
+```
+
+### Option 1: uv
+
+```bash
+# uv sync automatically creates the .venv and installs dependencies from pyproject.toml
+uv sync
+source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`, or run via WSL2 terminal
+```
+
+### Option 2: Standard pip (venv)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`, or run via WSL2 terminal
+pip install .              # Installs dependencies listed in pyproject.toml
+```
+
+### Option 3: Poetry
+
+```bash
+poetry install
+poetry shell
+```
+
+## Usage
+
+*Explain how to run the project. Provide examples of the commands needed to run data pipelines, training scripts, or start up applications/dashboards.*
+
+{% if include_module -%}
+The package lives under `src/{{module_name}}` (src layout) — once you've run `uv sync`, it installs in editable mode, so it's importable from anywhere in the project without extra path setup:
+
+```bash
+# Example: Run the data ingestion pipeline
+uv run python -m {{module_name}}.data.make_dataset
+
+# Example: Train the model
+uv run python -m {{module_name}}.models.train_model
+```
+{% else -%}
+This project has no installable package — it's a sandbox for notebooks and standalone scripts. Organize scripts under `src/` (`data/`, `features/`, `models/`, `visualization/`) and save any trained models to `models/` at the project root.
+
+```bash
+# Example: run a standalone script
+uv run python some_script.py
+```
+{% endif %}
+
+(`make_dataset.py` and `train_model.py` are placeholders — add scripts under `src/{{module_name}}/data` and `src/{{module_name}}/models` as your pipeline takes shape.)
+
+## Methodology
+
+*Briefly describe the data science lifecycle for this project:*
+
+1. **Data Cleaning & Preprocessing:** How was the data prepared and cleaned?
+2. **Exploratory Data Analysis (EDA):** What were the key findings and distributions?
+3. **Feature Engineering:** What new features were created or transformed?
+4. **Modeling:** Which algorithms were evaluated? How were hyperparameters tuned?
+5. **Evaluation:** What metrics were used (e.g., RMSE, F1-score, ROC-AUC) to validate the model?
+
+## Results
+
+*Summarize the final results of the analysis or model. Include key metrics, business insights, and potentially a visual representation (e.g., a link to a confusion matrix or feature importance plot in the `reports/` folder).*
+
+## Contributing
+
+*Guidelines for how others can contribute to the project.*
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+## License
+
+MIT License
+
+Copyright (c) 2026
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
