@@ -3,10 +3,24 @@ project_name:
   type: str
   help: What is your project name?
 
+project_type:
+  type: str
+  help: What kind of project is this?
+  choices:
+    Data Science (adds models, feature engineering to src/): data_science
+    Data Analysis (src/ has just data + visualization): data_analysis
+  default: data_analysis
+
+include_module:
+  type: bool
+  help: Include a Python module for shared functions/classes across notebooks?
+  default: true
+
 module_name:
   type: str
   help: What is your Python module name?
   default: "{{ project_name|lower|replace('-', '_') }}"
+  when: "{{ include_module }}"
 
 python_version:
   type: str

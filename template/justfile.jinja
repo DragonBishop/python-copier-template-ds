@@ -13,7 +13,7 @@ setup: install git-setup
 
 # run test coverage and create
 test-cov:
-  uv run pytest --cov {% raw %}{{module_name}}{% endraw %} --cov-report=lcov:lcov.info --cov-report=term-missing --cov-report html --cov-report xml
+  uv run pytest{% if include_module %} --cov=src/{{module_name}} --cov-report=lcov:lcov.info --cov-report=term-missing --cov-report html --cov-report xml{% endif %}
 
 # update packages and uv lock file
 update:
@@ -21,4 +21,5 @@ update:
 
 # set up the nbwipers git filter so notebooks stay clean on commit
 git-setup: install
+  @if [ ! -d .git ]; then git init; fi
   uv run nbwipers install local

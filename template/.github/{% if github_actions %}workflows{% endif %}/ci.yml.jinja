@@ -24,8 +24,7 @@ jobs:
       - name: unit tests
         run: |
           set -o pipefail && \
-          uv run pytest --cov {{module_name}} --junitxml=pytest.xml \
-          --cov-report=term-missing:skip-covered \
+          uv run pytest{% if include_module %} --cov=src/{{module_name}} --cov-report=term-missing:skip-covered{% endif %} --junitxml=pytest.xml \
           | tee pytest-coverage.txt
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
