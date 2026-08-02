@@ -1,7 +1,7 @@
 name: Technical Debt Resolution
 description: Flag code that works but will cost the project later
 title: 'Debt: '
-labels: ["techdebt"]
+labels: ["enhancement"]
 body:
 # Context
   - type: textarea

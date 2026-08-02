@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: >
-        Use this to propose the project do something it currently does not. Use a bug report for missing or broken features. Please be concise!
+        Use this to propose the project do something it currently does not. Use a bug report for broken features. Please be concise!
   - type: textarea
     id: rationale
     attributes:
