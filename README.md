@@ -60,6 +60,6 @@ The repository comes configured to use `pytest` for unit testing. If there's no 
 
 ### Github Actions
 
-You may optionally add a github workflow file which runs unit tests and checks coverage.
+You may optionally add a github workflow file which runs unit tests and checks coverage. `.yaml` issue templates are included for use on github.
 
 Test with [Copier](https://github.com/copier-org/copier) and [copier-template-tester](https://github.com/KyleKing/copier-template-tester).
