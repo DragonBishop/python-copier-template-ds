@@ -39,6 +39,9 @@ exclude_also = [
 [tool.hatch.version]
 path = "src/{{module_name}}/__init__.py"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/{{module_name}}"]
+
 [tool.hatch.build.targets.sdist]
 exclude = [
   "*.ipynb",
