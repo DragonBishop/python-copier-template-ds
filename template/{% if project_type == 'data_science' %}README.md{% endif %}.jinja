@@ -32,13 +32,17 @@ Brief description of the project, its purpose, and the main problem it solves.
 ```text
 ├── justfile                # Command runner recipes (setup, tests, etc.)
 ├── models                  # Trained and serialized models, model predictions, or summaries
+{% if include_notebooks -%}
 ├── notebooks               # Jupyter notebooks
 │   ├── data_processing_notebook.ipynb  # Data cleaning and integrity checks
 │   └── data_analysis_notebook.ipynb    # Exploratory analysis and findings
+{% endif -%}
 ├── pyproject.toml          # Configuration file for project and dependency management
+{% if include_reports -%}
 ├── reports                 # Generated analysis and documentation
 │   ├── REPORT.md           # Full write-up: summary, methodology, findings
 │   └── cleaning_log.md     # Running log of data-cleaning decisions
+{% endif -%}
 {% if include_module -%}
 ├── src
 │   └── {{module_name}}     # Main project module (importable package)
@@ -129,7 +133,7 @@ uv run python some_script.py
 
 ## Results
 
-*Summarize the final results of the analysis or model. Include key metrics, business insights, and potentially a visual representation (e.g., a link to a confusion matrix or feature importance plot in the `reports/` folder).*
+*Summarize the final results of the analysis or model. Include key metrics, business insights, and potentially a visual representation{% if include_reports %} (e.g., a link to a confusion matrix or feature importance plot in the `reports/` folder){% endif %}.*
 
 ## Contributing
 

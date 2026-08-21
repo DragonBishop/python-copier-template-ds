@@ -31,13 +31,17 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ```text
 ├── justfile              # Command runner recipes (setup, tests, etc.)
+{% if include_notebooks -%}
 ├── notebooks             # Jupyter notebooks
 │   ├── data_processing_notebook.ipynb  # Data cleaning and integrity checks
 │   └── data_analysis_notebook.ipynb    # Exploratory analysis and findings
+{% endif -%}
 ├── pyproject.toml        # Configuration file for project and dependency management
+{% if include_reports -%}
 ├── reports               # Generated analysis and documentation
 │   ├── REPORT.md         # Full write-up: summary, methodology, findings
 │   └── cleaning_log.md   # Running log of data-cleaning decisions
+{% endif -%}
 ├── tests                 # Unit tests and integration tests
 │   ├── __init__.py
 │   └── test_example.py
@@ -92,8 +96,10 @@ poetry shell
 
 *Explain how to run the project.*
 
-Start with `notebooks/data_processing_notebook.ipynb` to clean and validate the data, logging changes in `reports/cleaning_log.md` as you go.
-Move to `notebooks/data_analysis_notebook.ipynb` for exploratory analysis, then write up findings in `reports/REPORT.md`.
+{% if include_notebooks -%}
+Start with `notebooks/data_processing_notebook.ipynb` to clean and validate the data{% if include_reports %}, logging changes in `reports/cleaning_log.md` as you go{% endif %}.
+Move to `notebooks/data_analysis_notebook.ipynb` for exploratory analysis{% if include_reports %}, then write up findings in `reports/REPORT.md`{% endif %}.
+{% endif -%}
 {% if include_module -%}
 Shared helper functions used across notebooks live in `src/{{module_name}}/` — it installs in editable mode via `uv sync`, so it's importable from notebooks without extra path setup.
 {% else -%}
@@ -110,7 +116,7 @@ Standalone data and visualization scripts live under `src/` (not an installable 
 
 ## Results
 
-*Summarize the final results of the analysis. Include key metrics, business insights, and potentially a visual representation (e.g., a link to a chart in `reports/`).*
+*Summarize the final results of the analysis. Include key metrics, business insights, and potentially a visual representation{% if include_reports %} (e.g., a link to a chart in `reports/`){% endif %}.*
 
 ## Contributing
 

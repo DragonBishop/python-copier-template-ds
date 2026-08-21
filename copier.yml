@@ -22,6 +22,16 @@ module_name:
   default: "{{ project_name|lower|replace('-', '_') }}"
   when: "{{ include_module }}"
 
+include_notebooks:
+  type: bool
+  help: Include a notebooks/ directory for Jupyter notebooks?
+  default: true
+
+include_reports:
+  type: bool
+  help: Include a reports/ directory for write-ups and figures?
+  default: true
+
 python_version:
   type: str
   help: what is your python version?
@@ -31,3 +41,7 @@ github_actions:
   type: bool
   help: Add Github Actions CI?
   default: true
+
+_skip_if_exists:
+  - "notebooks/**"
+  - "reports/**"
