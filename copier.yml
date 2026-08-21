@@ -45,3 +45,4 @@ github_actions:
 _skip_if_exists:
   - "notebooks/**"
   - "reports/**"
+  - "src/**"
