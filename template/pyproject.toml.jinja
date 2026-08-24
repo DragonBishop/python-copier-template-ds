@@ -16,6 +16,7 @@ dev = [
   "pytest>=8",
   "pytest-cov>=7.0.0",
   "nbwipers>=0.6.1",
+  {% if use_prek %}"prek>=0.3.6"{% else %}"pre-commit>=4.5.1"{% endif %},
 ]
 lint = [
   "ruff>=0.13.0",
@@ -54,7 +55,13 @@ exclude = [
 {% endif %}
 [tool.nbwipers]
 strip-kernel-info = true
+{% if use_rumdl %}
+[tool.rumdl]
+disabled-rules = ["MD013"]
 
+[tool.rumdl.MD024]
+siblings-only = true
+{% endif %}
 [tool.uv]
 default-groups = ["dev"]
 {% if not include_module -%}

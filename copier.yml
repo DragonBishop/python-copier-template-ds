@@ -42,6 +42,16 @@ github_actions:
   help: Add Github Actions CI?
   default: true
 
+use_prek:
+  type: bool
+  help: Use prek instead of pre-commit for checks?
+  default: true
+
+use_rumdl:
+  type: bool
+  help: Use rumdl instead of markdownlint-cli2 for markdown checks?
+  default: true
+
 _skip_if_exists:
   - "notebooks/**"
   - "reports/**"
