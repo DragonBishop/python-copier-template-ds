@@ -35,7 +35,7 @@ include_reports:
 python_version:
   type: str
   help: what is your python version?
-  default: 3.14.6
+  default: 3.14.7
 
 github_actions:
   type: bool

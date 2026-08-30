@@ -19,7 +19,14 @@ test-cov:
 update:
   uv sync -U --all-groups --all-extras --inexact
 
-# set up the nbwipers git filter so notebooks stay clean on commit
+# set up git filters (nbwipers) and pre-commit hooks
 git-setup:
   @[ -d .git ] || git init
+{%- if include_notebooks %}
   uv run nbwipers install local
+{%- endif %}
+{%- if use_prek %}
+  uv run prek install
+{%- else %}
+  uv run pre-commit install
+{%- endif %}
