@@ -19,4 +19,4 @@ dev = [
 
 [tool.rumdl]
 disable = ["MD013"]
-exclude = [".ctt"]
+exclude = [".ctt", "CHANGELOG.md"]
