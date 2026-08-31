@@ -1,0 +1,12 @@
+extends: default
+
+ignore:
+  - .ctt/
+
+rules:
+  document-start: disable
+  comments-indentation: disable
+  line-length:
+    max: 140
+  truthy:
+    allowed-values: ["true", "false", "on"]
