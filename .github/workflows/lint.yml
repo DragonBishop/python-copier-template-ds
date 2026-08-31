@@ -1,0 +1,32 @@
+name: lint
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [data]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: "Set up Python"
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Install dev tools
+        run: uv sync --group dev --frozen
+      - name: lint markdown
+        run: uv run rumdl check .
+      - name: lint yaml
+        run: uv run yamllint .
+      - name: lint jinja templates
+        run: |
+          uv run j2lint template \
+            -i jinja-statements-delimiter single-statement-per-line jinja-statements-indentation
