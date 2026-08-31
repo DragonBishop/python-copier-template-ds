@@ -1,0 +1,41 @@
+name: test-template
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [data]
+
+permissions:
+  contents: read
+
+jobs:
+  render-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: "Set up Python"
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Install dev tools
+        run: uv sync --group dev --frozen
+      - name: Render template variants
+        run: uv run ctt --continue-on-error
+      - name: Lint + test each rendered variant
+        run: |
+          set -e
+          for dir in .ctt/*/; do
+            echo "::group::$dir"
+            (
+              cd "$dir"
+              uv sync --group lint
+              uv run ruff format --check --diff .
+              uv run ruff check --output-format=github .
+              uv sync --all-extras --all-groups
+              uv run pytest
+            )
+            echo "::endgroup::"
+          done

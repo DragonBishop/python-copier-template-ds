@@ -1,4 +1,4 @@
-module_name := "{{module_name}}"
+module_name := "{{ module_name }}"
 
 # list commands
 default:
@@ -13,7 +13,7 @@ setup: install git-setup
 
 # run test coverage and create
 test-cov:
-  uv run pytest{% if include_module %} --cov=src/{{module_name}} --cov-report=lcov:lcov.info --cov-report=term-missing --cov-report html --cov-report xml{% endif %}
+  uv run pytest{% if include_module %} --cov=src/{{ module_name }} --cov-report=lcov:lcov.info --cov-report=term-missing --cov-report html --cov-report xml{% endif %}
 
 # update packages and uv lock file
 update:
@@ -25,8 +25,4 @@ git-setup:
 {%- if include_notebooks %}
   uv run nbwipers install local
 {%- endif %}
-{%- if use_prek %}
   uv run prek install
-{%- else %}
-  uv run pre-commit install
-{%- endif %}

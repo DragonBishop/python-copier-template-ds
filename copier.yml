@@ -39,17 +39,12 @@ python_version:
 
 github_actions:
   type: bool
-  help: Add Github Actions CI?
-  default: true
-
-use_prek:
-  type: bool
-  help: Use prek instead of pre-commit for checks?
+  help: Add Github Actions CI (lint/test checks, plus release-please + git-cliff versioning and changelog automation)?
   default: true
 
 use_rumdl:
   type: bool
-  help: Use rumdl instead of markdownlint-cli2 for markdown checks?
+  help: Include markdown linting?
   default: true
 
 _skip_if_exists:
