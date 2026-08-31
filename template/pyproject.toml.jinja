@@ -1,8 +1,8 @@
 [project]
-name = "{{project_name}}"
+name = "{{ project_name }}"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">={{python_version}}"
+requires-python = ">={{ python_version }}"
 dependencies = [
 {%- if include_notebooks %}
   "ipykernel>=6.29.5",
@@ -20,7 +20,7 @@ dev = [
 {%- if include_notebooks %}
   "nbwipers>=0.7.1",
 {%- endif %}
-  {% if use_prek %}"prek>=0.4.14"{% else %}"pre-commit>=4.5.1"{% endif %},
+  "prek>=0.4.14",
 ]
 lint = [
   "ruff>=0.16.4",
@@ -45,10 +45,10 @@ exclude_also = [
 ]
 {% if include_module %}
 [tool.hatch.version]
-path = "src/{{module_name}}/__init__.py"
+path = "src/{{ module_name }}/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/{{module_name}}"]
+packages = ["src/{{ module_name }}"]
 
 [tool.hatch.build.targets.sdist]
 exclude = [

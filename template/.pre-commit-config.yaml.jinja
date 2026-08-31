@@ -21,8 +21,4 @@ repos:
     rev: v0.1.58
     hooks:
       - id: rumdl      # Lint only (fails on issues)
-      - id: rumdl-fmt  # Auto-format and fail if issues remain{% else %}
--   repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.21.0
-    hooks:
-    -   id: markdownlint-cli2{% endif %}
+      - id: rumdl-fmt  # Auto-format and fail if issues remain{% endif %}
