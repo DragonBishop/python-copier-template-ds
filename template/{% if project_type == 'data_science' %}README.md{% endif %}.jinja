@@ -45,7 +45,7 @@ Brief description of the project, its purpose, and the main problem it solves.
 {% endif -%}
 {% if include_module -%}
 ├── src
-│   └── {{module_name}}     # Main project module (importable package)
+│   └── {{ module_name }}     # Main project module (importable package)
 │       ├── data            # Scripts to fetch, clean, or generate data
 │       ├── features        # Scripts to turn raw data into features for modeling
 │       ├── models          # Scripts to train models and generate predictions
@@ -69,8 +69,8 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/{{project_name}}.git
-cd {{project_name}}
+git clone https://github.com/username/{{ project_name }}.git
+cd {{ project_name }}
 ```
 
 ### Option 1: uv
@@ -101,14 +101,14 @@ poetry shell
 *Explain how to run the project. Provide examples of the commands needed to run data pipelines, training scripts, or start up applications/dashboards.*
 
 {% if include_module -%}
-The package lives under `src/{{module_name}}` (src layout) — once you've run `uv sync`, it installs in editable mode, so it's importable from anywhere in the project without extra path setup:
+The package lives under `src/{{ module_name }}` (src layout) — once you've run `uv sync`, it installs in editable mode, so it's importable from anywhere in the project without extra path setup:
 
 ```bash
 # Example: Run the data ingestion pipeline
-uv run python -m {{module_name}}.data.make_dataset
+uv run python -m {{ module_name }}.data.make_dataset
 
 # Example: Train the model
-uv run python -m {{module_name}}.models.train_model
+uv run python -m {{ module_name }}.models.train_model
 ```
 {% else -%}
 This project has no installable package — it's a sandbox for notebooks and standalone scripts. Organize scripts under `src/` (`data/`, `features/`, `models/`, `visualization/`) and save any trained models to `models/` at the project root.
@@ -119,7 +119,7 @@ uv run python some_script.py
 ```
 {% endif %}
 
-(`make_dataset.py` and `train_model.py` are placeholders — add scripts under `src/{{module_name}}/data` and `src/{{module_name}}/models` as your pipeline takes shape.)
+(`make_dataset.py` and `train_model.py` are placeholders — add scripts under `src/{{ module_name }}/data` and `src/{{ module_name }}/models` as your pipeline takes shape.)
 
 ## Methodology
 

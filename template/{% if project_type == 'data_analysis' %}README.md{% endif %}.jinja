@@ -47,7 +47,7 @@ Brief description of the project, its purpose, and the main problem it solves.
 │   └── test_example.py
 {% if include_module -%}
 ├── src
-│   └── {{module_name}}    # Shared functions/classes used across notebooks (importable package)
+│   └── {{ module_name }}    # Shared functions/classes used across notebooks (importable package)
 │       ├── __init__.py
 │       ├── data           # Scripts to fetch, clean, or generate data
 │       └── visualization  # Scripts to create exploratory and results-oriented visualizations
@@ -65,8 +65,8 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/{{project_name}}.git
-cd {{project_name}}
+git clone https://github.com/username/{{ project_name }}.git
+cd {{ project_name }}
 ```
 
 ### Option 1: uv
@@ -101,7 +101,7 @@ Start with `notebooks/data_processing_notebook.ipynb` to clean and validate the 
 Move to `notebooks/data_analysis_notebook.ipynb` for exploratory analysis{% if include_reports %}, then write up findings in `reports/REPORT.md`{% endif %}.
 {% endif -%}
 {% if include_module -%}
-Shared helper functions used across notebooks live in `src/{{module_name}}/` — it installs in editable mode via `uv sync`, so it's importable from notebooks without extra path setup.
+Shared helper functions used across notebooks live in `src/{{ module_name }}/` — it installs in editable mode via `uv sync`, so it's importable from notebooks without extra path setup.
 {% else -%}
 Standalone data and visualization scripts live under `src/` (not an installable package — just organized scripts).
 {% endif %}
