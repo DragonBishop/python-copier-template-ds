@@ -13,6 +13,13 @@
 - Use dedicated PAT for release-please instead of repo Actions permission
 - *(template)* Use dedicated PAT for release-please
 - *(data)* Release 1.5.0
+## [1.6.0](https://github.com/DragonBishop/python-copier-template-ds/compare/v1.5.0...v1.6.0) (2026-09-17)
+
+
+### Features
+
+* **release:** authenticate release-please with GitHub App token ([2221060](https://github.com/DragonBishop/python-copier-template-ds/commit/222106005b53f135718435633900614480f7b0ef))
+
 ## [1.4.0] - 2026-08-31
 
 ### 🚀 Features
