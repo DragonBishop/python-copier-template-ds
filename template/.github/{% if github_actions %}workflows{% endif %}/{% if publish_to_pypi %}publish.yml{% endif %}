@@ -1,0 +1,35 @@
+name: publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: "Set up Python"
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Add repository URLs to package metadata
+        run: |
+          cat >> pyproject.toml << EOF
+
+          [project.urls]
+          Homepage = "${{ github.server_url }}/${{ github.repository }}"
+          Repository = "${{ github.server_url }}/${{ github.repository }}"
+          Issues = "${{ github.server_url }}/${{ github.repository }}/issues"
+          EOF
+      - name: Build package
+        run: uv build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
