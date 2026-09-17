@@ -15,6 +15,13 @@
 - Add CI for template repo itself, including release-please, git-cliff, and linting. Updated python dependencies for project and template.
 - Enhance README with detailed template options and project structure descriptions
 - Add GITHUB_TOKEN to release workflow and update rumdl exclusions
+## [1.5.0](https://github.com/DragonBishop/python-copier-template-ds/compare/v1.4.0...v1.5.0) (2026-09-17)
+
+
+### Features
+
+* add PyPI publishing support to the template ([d9c8b4d](https://github.com/DragonBishop/python-copier-template-ds/commit/d9c8b4d87392caa1d0de2107d8fc4a0a17152524))
+
 ## [1.3.1] - 2026-08-30
 
 ### 🚀 Features
