@@ -3,6 +3,13 @@ name = "{{ project_name }}"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">={{ python_version }}"
+authors = [{ name = "DragonBishop", email = "276789280+DragonBishop@users.noreply.github.com" }]
+license = "MIT"
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: {{ python_version.split('.')[0] }}.{{ python_version.split('.')[1] }}",
+]
 dependencies = [
 {%- if include_notebooks %}
   "ipykernel>=6.29.5",

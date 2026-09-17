@@ -47,6 +47,12 @@ use_rumdl:
   help: Include markdown linting?
   default: true
 
+publish_to_pypi:
+  type: bool
+  help: Add a GitHub Actions job to publish this package to PyPI on release?
+  default: false
+  when: "{{ include_module and github_actions }}"
+
 _skip_if_exists:
   - "notebooks/**"
   - "reports/**"
