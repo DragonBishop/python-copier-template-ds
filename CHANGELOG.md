@@ -1,12 +1,19 @@
-## [1.4.0] - 2026-08-31
+## [1.5.0] - 2026-09-17
+
+### 🚀 Features
+
+- Add PyPI publishing support to the template
+
+### 📚 Documentation
+
+- Regenerate changelog for v1.4.0
 
 ### ⚙️ Miscellaneous Tasks
 
-- *(data)* Release 1.4.0
-
-### 🐛 Bug Fixes
-
-- *(template)* Lint fixes caught by the new CI
+- Use dedicated PAT for release-please instead of repo Actions permission
+- *(template)* Use dedicated PAT for release-please
+- *(data)* Release 1.5.0
+## [1.4.0] - 2026-08-31
 
 ### 🚀 Features
 
@@ -15,13 +22,14 @@
 - Add CI for template repo itself, including release-please, git-cliff, and linting. Updated python dependencies for project and template.
 - Enhance README with detailed template options and project structure descriptions
 - Add GITHUB_TOKEN to release workflow and update rumdl exclusions
-## [1.5.0](https://github.com/DragonBishop/python-copier-template-ds/compare/v1.4.0...v1.5.0) (2026-09-17)
 
+### 🐛 Bug Fixes
 
-### Features
+- *(template)* Lint fixes caught by the new CI
 
-* add PyPI publishing support to the template ([d9c8b4d](https://github.com/DragonBishop/python-copier-template-ds/commit/d9c8b4d87392caa1d0de2107d8fc4a0a17152524))
+### ⚙️ Miscellaneous Tasks
 
+- *(data)* Release 1.4.0
 ## [1.3.1] - 2026-08-30
 
 ### 🚀 Features
@@ -67,9 +75,9 @@
 - [**breaking**] Replace markdown issue templates with issue forms
 ## [0.1.1] - 2026-08-01
 
-### Refactor
+### 🚀 Features
 
-- Remove pre-commit/Ruff, update README and template structure
+- Add project type and module inclusion options to copier template; implement CI workflow and update README structure
 
 ### ⚙️ Miscellaneous Tasks
 
@@ -78,7 +86,7 @@
 - Update issue templates for consistency and clarity
 - Update README and issue templates for consistency and clarity
 
-### 🚀 Features
+### Refactor
 
-- Add project type and module inclusion options to copier template; implement CI workflow and update README structure
+- Remove pre-commit/Ruff, update README and template structure
 ## [0.1.2] - 2026-03-17
