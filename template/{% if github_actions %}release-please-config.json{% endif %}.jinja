@@ -1,9 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "release-type": "python",
+  "release-type": "{{ 'python' if include_module else 'simple' }}",
   "include-component-in-tag": false,
 {%- if include_module %}
   "extra-files": ["src/{{ module_name }}/__init__.py"],
+{%- else %}
+  "extra-files": [
+    { "type": "toml", "path": "pyproject.toml", "jsonpath": "$.project.version" },
+    { "type": "toml", "path": "uv.lock", "jsonpath": "$.package[?(@.source && @.source.virtual && @.source.virtual.value=='.')].version" }
+  ],
 {%- endif %}
   "packages": {
     ".": {}
