@@ -57,3 +57,19 @@ _skip_if_exists:
   - "notebooks/**"
   - "reports/**"
   - "src/**"
+
+_exclude:
+  - "~*"
+  - "*.py[co]"
+  - "__pycache__"
+  - ".git"
+  - ".DS_Store"
+  - ".svn"
+  - "{% if _copier_operation == 'update' %}notebooks{% endif %}"
+  - "{% if _copier_operation == 'update' %}reports{% endif %}"
+  - "{% if _copier_operation == 'update' %}src{% endif %}"
+
+# copy only: on update it runs before local changes are re-applied.
+_tasks:
+  - command: "just setup"
+    when: "{{ _copier_operation == 'copy' }}"

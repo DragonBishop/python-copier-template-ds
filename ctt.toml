@@ -1,8 +1,13 @@
 [defaults]
 project_name = "ctt-test"
+_skip_tasks = true
 
 [output.".ctt/no-ci"]
 github_actions = false
 
 [output.".ctt/ci"]
 github_actions = true
+
+[output.".ctt/no-module-no-notebooks"]
+include_module = false
+include_notebooks = false
