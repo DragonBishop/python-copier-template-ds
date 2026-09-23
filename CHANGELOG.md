@@ -1,3 +1,9 @@
+## [1.7.0] - 2026-09-23
+
+### 🚀 Features
+
+- Update release workflow to conditionally regenerate CHANGELOG.md and adjust commit messages
+- Update release workflow to use GitHub App client ID and upgrade token action version
 ## [1.6.0] - 2026-09-20
 
 ### 🚀 Features
@@ -8,7 +14,6 @@
 ### ⚙️ Miscellaneous Tasks
 
 - *(release)* Update version to 1.5.0 in pyproject.toml and uv.lock; adjust release-please config
-- *(data)* Release 1.6.0
 ## [1.5.0] - 2026-09-17
 
 ### 🚀 Features
@@ -19,7 +24,6 @@
 
 - Use dedicated PAT for release-please instead of repo Actions permission
 - *(template)* Use dedicated PAT for release-please
-- *(data)* Release 1.5.0
 ## [1.4.0] - 2026-08-31
 
 ### 🚀 Features
@@ -33,10 +37,6 @@
 ### 🐛 Bug Fixes
 
 - *(template)* Lint fixes caught by the new CI
-
-### ⚙️ Miscellaneous Tasks
-
-- *(data)* Release 1.4.0
 ## [1.3.1] - 2026-08-30
 
 ### 🚀 Features
