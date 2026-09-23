@@ -99,7 +99,7 @@ The configuration is stored in `.pre-commit-config.yaml`, and includes basic fil
 
 ### Github Actions
 
-Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check`, a `tests` job that runs `pytest`, and a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and regenerates `CHANGELOG.md` with [git-cliff](https://github.com/orhun/git-cliff) whenever a release is cut. `.yaml` issue templates are included.
+Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check`, a `tests` job that runs `pytest`, and a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and commits a [git-cliff](https://github.com/orhun/git-cliff) `CHANGELOG.md` onto each release PR. `.yaml` issue templates are included.
 
 The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`.
 
@@ -185,11 +185,11 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
   * **`ISSUE_TEMPLATE/`**: Issue templates for bug reports, documentation updates, feature proposals, and technical-debt resolution.
   * **`workflows/lint.yml`**: Lints this repository's own files. Runs `rumdl` for markdown, `yamllint` for YAML, and `j2lint` for the Jinja templates under `template/`.
   * **`workflows/test-template.yml`**: Renders every `ctt.toml` variant, then runs `ruff format --check`, `ruff check`, and `pytest` against each rendered output.
-  * **`workflows/release.yml`**: Lints the PR title against Conventional Commits. On push, `release-please` opens or updates a release PR, and once a release is tagged, regenerates this repo's own `CHANGELOG.md` with `git-cliff`.
+  * **`workflows/release.yml`**: Lints the PR title against Conventional Commits. On push, `release-please` opens or updates a release PR, and `git-cliff` commits this repo's own `CHANGELOG.md` onto that PR's branch.
 * **`template/`**: The Copier source tree. A path wrapped in `{% if %}`/`{% endif %}` is included when its condition holds, and `{{ variable }}` names are filled in, both from the answers in [Template Options](#template-options).
   * **`{{ _copier_conf.answers_file }}.jinja`**: Renders `.copier-answers.yml` into the generated project, recording the answers used for later `copier update` runs.
   * **`.github/ISSUE_TEMPLATE/`**: Copied into the generated project as-is.
-  * **`.github/{% if github_actions %}workflows{% endif %}/`**: `lint.yml` runs ruff, `tests.yml.jinja` runs pytest with a coverage flag conditional on `include_module`, and `release.yml` runs PR-title lint plus release-please and git-cliff. All three are only included when `github_actions` is true.
+  * **`.github/{% if github_actions %}workflows{% endif %}/`**: `lint.yml` runs ruff, `tests.yml.jinja` runs pytest with a coverage flag conditional on `include_module`, and `release.yml` runs PR-title lint plus release-please, with git-cliff committing `CHANGELOG.md` onto the release PR. All three are only included when `github_actions` is true.
   * **`{% if github_actions %}cliff.toml{% endif %}`**, **`{% if github_actions %}release-please-config.json{% endif %}.jinja`**, **`{% if github_actions %}.release-please-manifest.json{% endif %}`**: Changelog and release-please config for the generated project, only included when `github_actions` is true. The config is `release-type: python` (bumps `__version__` in the module's `__init__.py`) when `include_module` is true, and `release-type: simple` (bumps `pyproject.toml`'s `version` and the root entry in `uv.lock`) otherwise. Commit `uv.lock`.
   * **`{% if include_notebooks %}notebooks{% endif %}/`**: Starter notebooks for data processing and analysis, only included when `include_notebooks` is true.
   * **`{% if include_reports %}reports{% endif %}/`**: Write-up, cleaning log, and a `figures/` folder, only included when `include_reports` is true.
