@@ -101,7 +101,7 @@ The configuration is stored in `.pre-commit-config.yaml`, and includes basic fil
 
 Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check`, a `tests` job that runs `pytest`, and a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and commits a [git-cliff](https://github.com/orhun/git-cliff) `CHANGELOG.md` onto each release PR. `.yaml` issue templates are included.
 
-The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`.
+The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_CLIENT_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`.
 
 ---
 
