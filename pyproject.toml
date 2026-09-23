@@ -1,6 +1,6 @@
 [project]
 name = "python-copier-template-ds"
-version = "1.6.0"
+version = "1.7.0"
 description = "Dev tooling for the python-copier-template-ds Copier template (not a package)"
 requires-python = ">=3.14.7"
 dependencies = []
