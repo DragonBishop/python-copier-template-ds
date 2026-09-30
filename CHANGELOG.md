@@ -1,3 +1,8 @@
+## [1.7.1] - 2026-09-30
+
+### 🐛 Bug Fixes
+
+- Update justfile to initialize git with main branch and implement minot bug fixes on jinja templates
 ## [1.7.0] - 2026-09-23
 
 ### 🚀 Features
