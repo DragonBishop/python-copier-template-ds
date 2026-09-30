@@ -1,3 +1,8 @@
+## [1.7.2] - 2026-09-30
+
+### 🐛 Bug Fixes
+
+- Add README.md to _skip_if_exists in copier.yml
 ## [1.7.1] - 2026-09-30
 
 ### 🐛 Bug Fixes
