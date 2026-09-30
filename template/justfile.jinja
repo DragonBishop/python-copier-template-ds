@@ -21,7 +21,7 @@ update:
 
 # set up {% if include_notebooks %}git filters (nbwipers) and {% endif %}pre-commit hooks
 git-setup:
-  @[ -d .git ] || git init
+  @[ -d .git ] || git init -b main
 {%- if include_notebooks %}
   uv run nbwipers install local
 {%- endif %}
