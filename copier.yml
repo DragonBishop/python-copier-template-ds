@@ -54,6 +54,7 @@ publish_to_pypi:
   when: "{{ include_module and github_actions }}"
 
 _skip_if_exists:
+  - "README.md"
   - "notebooks/**"
   - "reports/**"
   - "src/**"
