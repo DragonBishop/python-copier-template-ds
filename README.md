@@ -39,7 +39,7 @@ These `copier.yml` questions shape the generated project's structure:
 | `module_name` | `str` | snake_case name | Only asked for `custom`. Lowercase Python identifier. |
 | `structure` | multi-select | `data`, `visualization`, `notebooks`, `reports` | `data`/`visualization`/`features`/`models` add subpackages to `src/{{module_name}}/`; `features` or `models` switch the README to data-science wording. `notebooks` adds starter notebooks; `reports` adds a write-up, cleaning log, and `figures/`. |
 | `python_version` | `str` | `3.14.7` | Pinned in `.python-version` and `requires-python`. |
-| `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please + git-cliff, plus PR-title lint. `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `releases` needs `github_actions`. |
+| `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please + git-cliff, plus PR-title lint. `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `semgrep`: Semgrep scan on PRs and daily; uses free Registry rules until a `SEMGREP_APP_TOKEN` secret is added, then your Semgrep AppSec Platform policies. `releases` and `semgrep` need `github_actions`. |
 | `publish_to_pypi` | `bool` | `false` | Only asked with `github_actions`. Publishes to PyPI when a release is published. |
 
 `notebooks/`, `reports/`, `src/`, and `tests/` are one-time scaffolding: `copier update` won't re-create or overwrite them once they exist.
@@ -103,7 +103,7 @@ The configuration is stored in `.pre-commit-config.yaml`, and includes basic fil
 
 ### Github Actions
 
-Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check` and a `tests` job that runs `pytest` (`github_actions`); a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and commits a [git-cliff](https://github.com/orhun/git-cliff) `CHANGELOG.md` onto each release PR (`releases`). `.yaml` issue templates are included.
+Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check` and a `tests` job that runs `pytest` (`github_actions`); a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and commits a [git-cliff](https://github.com/orhun/git-cliff) `CHANGELOG.md` onto each release PR (`releases`); and a Semgrep scan (`semgrep`). `.yaml` issue templates are included.
 
 The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_CLIENT_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`.
 
@@ -145,6 +145,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
 │   │       ├── lint.yml
 │   │       ├── tests.yml.jinja
 │   │       ├── {% if 'releases' in tooling %}release.yml{% endif %}
+│   │       ├── {% if 'semgrep' in tooling %}semgrep.yml{% endif %}
 │   │       └── {% if publish_to_pypi %}publish.yml{% endif %}
 │   ├── {% if 'releases' in tooling %}cliff.toml{% endif %}
 │   ├── {% if 'releases' in tooling %}release-please-config.json{% endif %}.jinja
@@ -194,7 +195,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
 * **`template/`**: The Copier source tree. A path wrapped in `{% if %}`/`{% endif %}` is included when its condition holds, and `{{ variable }}` names are filled in, both from the answers in [Template Options](#template-options).
   * **`{{ _copier_conf.answers_file }}.jinja`**: Renders `.copier-answers.yml` into the generated project, recording the answers used for later `copier update` runs.
   * **`.github/ISSUE_TEMPLATE/`**: Copied into the generated project as-is.
-  * **`.github/{% if 'github_actions' in tooling %}workflows{% endif %}/`**: Only included when `tooling` has `github_actions`. `lint.yml` runs ruff; `tests.yml.jinja` runs pytest with coverage. `release.yml` (with `releases`) runs PR-title lint plus release-please, with git-cliff committing `CHANGELOG.md` onto the release PR. `publish.yml` (with `publish_to_pypi`) publishes to PyPI on release.
+  * **`.github/{% if 'github_actions' in tooling %}workflows{% endif %}/`**: Only included when `tooling` has `github_actions`. `lint.yml` runs ruff; `tests.yml.jinja` runs pytest with coverage. `release.yml` (with `releases`) runs PR-title lint plus release-please, with git-cliff committing `CHANGELOG.md` onto the release PR. `semgrep.yml` (with `semgrep`) runs `semgrep ci` on PRs and daily, with Registry rules (`p/default`, `p/github-actions`) when `SEMGREP_APP_TOKEN` isn't set, so forks and new repos still get a real scan. `publish.yml` (with `publish_to_pypi`) publishes to PyPI on release.
   * **`{% if 'releases' in tooling %}cliff.toml{% endif %}`**, **`{% if 'releases' in tooling %}release-please-config.json{% endif %}.jinja`**, **`{% if 'releases' in tooling %}.release-please-manifest.json{% endif %}`**: Changelog and release-please config for the generated project, only included when `tooling` has `releases`. Uses `release-type: python`, which bumps `__version__` in the module's `__init__.py`.
   * **`{% if 'renovate' in tooling %}renovate.json{% endif %}`**: Renovate config for the generated project, only included when `tooling` has `renovate`. Enables the `pre-commit` manager (off by default in Renovate), weekly lock-file maintenance, and semantic `chore(deps)` PR titles so the `release.yml` title lint passes.
   * **`{% if 'notebooks' in structure %}notebooks{% endif %}/`**: Starter notebooks for data processing and analysis.
