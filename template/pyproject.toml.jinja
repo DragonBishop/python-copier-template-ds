@@ -75,4 +75,6 @@ exclude = ["CHANGELOG.md"]
 siblings-only = true
 {% endif %}
 [tool.uv]
+# 7-day supply-chain cooldown, first in tool.uv for Semgrep
+exclude-newer = "7 days"
 default-groups = ["dev"]
