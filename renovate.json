@@ -1,0 +1,69 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "schedule": ["before 6am on monday"],
+  "timezone": "America/New_York",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "github-actions": {
+    "managerFilePatterns": ["/^template/\\.github/.+\\.ya?ml(\\.jinja)?$/"]
+  },
+  "customManagers": [
+    {
+      "description": "PyPI pins in the template pyproject (\"pkg>=X.Y.Z\")",
+      "customType": "regex",
+      "managerFilePatterns": ["/^template/pyproject\\.toml\\.jinja$/"],
+      "matchStrings": ["\"(?<depName>[A-Za-z0-9_.-]+)>=(?<currentValue>[0-9][^\",]*)\""],
+      "datasourceTemplate": "pypi",
+      "versioningTemplate": "pep440"
+    },
+    {
+      "description": "pre-commit hook revs in the template",
+      "customType": "regex",
+      "managerFilePatterns": ["/^template/\\.pre-commit-config\\.yaml\\.jinja$/"],
+      "matchStrings": ["repo: https://github\\.com/(?<depName>\\S+)\\s*\\n(?:\\s*#.*\\n)*\\s*rev: (?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "description": "Default python_version in copier.yml",
+      "customType": "regex",
+      "managerFilePatterns": ["/^copier\\.yml$/"],
+      "matchStrings": ["python_version:[\\s\\S]*?default: (?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "python",
+      "datasourceTemplate": "python-version"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Template deps reach generated projects: fix(deps) so release-please cuts a patch release",
+      "matchFileNames": ["template/**", "copier.yml"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "deps"
+    },
+    {
+      "description": "Repo-only tooling: chore(deps), skipped by git-cliff and no release",
+      "matchFileNames": ["pyproject.toml", "uv.lock", ".github/**", ".python-version"],
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps"
+    },
+    {
+      "description": "One PR (and one release) per week for non-major template bumps",
+      "matchFileNames": ["template/**", "copier.yml"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "template dependencies"
+    },
+    {
+      "description": "Keep the Python default and .python-version in lockstep",
+      "matchDepNames": ["python"],
+      "groupName": "python version"
+    },
+    {
+      "description": "Python patch releases only; move to a new 3.x by hand once deps support it",
+      "matchDepNames": ["python"],
+      "matchUpdateTypes": ["minor", "major"],
+      "enabled": false
+    }
+  ]
+}
