@@ -1,3 +1,20 @@
+## [2.0.0] - 2026-10-17
+
+### 🚀 Features
+
+- Add support for testing commit messages in cliff.toml
+- Add renovate configuration for dependency management
+- [**breaking**] Replace project questions with structure and tooling multi-selects
+- Add Semgrep tooling option
+- Add 7-day dependency cooldown
+
+### 🐛 Bug Fixes
+
+- Add README.md to _skip_if_exists in copier.yml
+
+### ⚙️ Miscellaneous Tasks
+
+- Pin GitHub Actions to commit SHAs
 ## [1.7.1] - 2026-09-30
 
 ### 🐛 Bug Fixes
