@@ -6,6 +6,9 @@ ignore:
 rules:
   document-start: disable
   comments-indentation: disable
+  # Renovate writes SHA pins as `@<sha> # vX.Y.Z` with one space.
+  comments:
+    min-spaces-from-content: 1
   line-length:
     max: 140
   truthy:

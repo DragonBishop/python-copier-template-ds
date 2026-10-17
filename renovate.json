@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":semanticCommits"],
+  "extends": ["config:recommended", ":semanticCommits", "helpers:pinGitHubActionDigests"],
   "schedule": ["before 6am on monday"],
   "timezone": "America/New_York",
   "lockFileMaintenance": {
@@ -8,7 +8,7 @@
     "schedule": ["before 6am on monday"]
   },
   "github-actions": {
-    "managerFilePatterns": ["/^template/\\.github/.+\\.ya?ml(\\.jinja)?$/"]
+    "managerFilePatterns": ["/^template/\\.github/.+\\.ya?ml(\\.jinja|\\{% endif %\\})?$/"]
   },
   "customManagers": [
     {
