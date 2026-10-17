@@ -47,6 +47,7 @@ tooling:
     "Releases: release-please + git-cliff (needs Actions)": releases
     "rumdl: markdown linting": rumdl
     "Renovate: dependency PRs (needs the Renovate app)": renovate
+    "Semgrep: scanning (needs Actions + SEMGREP_APP_TOKEN)": semgrep
     "PyPI: publish on release (needs Releases)": pypi
   default: >-
     {% set enabled = {
@@ -58,7 +59,7 @@ tooling:
     } %}
     {{ enabled.items() | selectattr('1') | map(attribute='0') | list | tojson }}
   validator: >-
-    {% set requires = {'releases': 'github_actions', 'pypi': 'releases'} %}
+    {% set requires = {'releases': 'github_actions', 'semgrep': 'github_actions', 'pypi': 'releases'} %}
     {% for option, required in requires.items() if option in tooling and required not in tooling %}
     {{ option }} needs {{ required }}.
     {% endfor %}
