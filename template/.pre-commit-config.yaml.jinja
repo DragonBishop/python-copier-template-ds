@@ -13,10 +13,10 @@ repos:
     hooks:
       # Run the linter.
     -   id: ruff-check
-        types_or: [python, pyi{% if include_notebooks %}, jupyter{% endif %}]
+        types_or: [python, pyi{% if 'notebooks' in structure %}, jupyter{% endif %}]
         # Run the formatter.
     -   id: ruff-format
-        types_or: [python, pyi{% if include_notebooks %}, jupyter{% endif %}]{% if use_rumdl %}
+        types_or: [python, pyi{% if 'notebooks' in structure %}, jupyter{% endif %}]{% if 'rumdl' in tooling %}
 -   repo: https://github.com/rvben/rumdl-pre-commit
     rev: v0.2.62
     hooks:
