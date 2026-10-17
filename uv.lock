@@ -305,7 +305,7 @@ wheels = [
 
 [[package]]
 name = "python-copier-template-ds"
-version = "1.7.1"
+version = "2.0.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
