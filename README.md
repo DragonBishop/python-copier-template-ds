@@ -200,6 +200,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
   * **`README.md.jinja`**: The generated project's own README. Its directory tree lists only the selected `structure` folders, and selecting `features` or `models` switches it to data-science wording.
   * **`src/{{module_name}}/`**: The installable package, always generated, holding the selected `data/`, `visualization/`, `features/`, and `models/` subpackages.
   * **`tests/`**: `pytest` fixtures and an example test, always included.
+  * **`pyproject.toml.jinja`** sets `exclude-newer = "7 days"` under `[tool.uv]`, a supply-chain cooldown; the generated `renovate.json` matches it with `minimumReleaseAge`.
   * **`justfile.jinja`**, **`.pre-commit-config.yaml.jinja`**, **`pyproject.toml.jinja`**, **`.python-version.jinja`**, **`.gitignore.jinja`**, **`.gitattributes`**: Generated project's root-level tooling config.
 * **`copier.yml`**: The questions and defaults documented in [Template Options](#template-options).
 * **`ctt.toml`**: [copier-template-tester](https://github.com/KyleKing/copier-template-tester) scenarios: `ci` (every `tooling` option), `no-ci` (no `tooling`), `no-notebooks`, `data-science` (every `structure` option, PyPI publishing with only the tooling it requires), and `minimal` (nothing selected). Rendered into `.ctt/` by `uv run ctt`.
