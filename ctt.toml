@@ -6,7 +6,7 @@ _skip_tasks = true
 tooling = []
 
 [output.".ctt/ci"]
-tooling = ["github_actions", "releases", "rumdl", "renovate", "pypi"]
+tooling = ["github_actions", "releases", "rumdl", "renovate", "semgrep", "pypi"]
 
 [output.".ctt/no-notebooks"]
 structure = ["data", "visualization", "reports"]

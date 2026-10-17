@@ -18,6 +18,9 @@ Brief description of the project, its purpose, and the main problem it solves.
 * [Usage](#usage)
 * [Methodology](#methodology)
 * [Key Insights & Results](#results)
+{% if 'semgrep' in tooling -%}
+* [Security Scanning](#security-scanning)
+{% endif -%}
 * [Contributing](#contributing)
 * [License](#license)
 
@@ -135,6 +138,18 @@ uv run python -m {{ module_name }}.models.train_model
 
 *Summarize the final results of the {{ 'analysis or model' if modeling else 'analysis' }}. Include key metrics, business insights, and potentially a visual representation{% if 'reports' in structure %} (e.g., a link to {{ 'a confusion matrix or feature importance plot' if modeling else 'a chart' }} in `reports/`){% endif %}.*
 
+{% if 'semgrep' in tooling -%}
+## Security Scanning
+
+[Semgrep](https://semgrep.dev) scans every pull request and push to `main` (`.github/workflows/semgrep.yml`). Findings fail the check.
+
+Create a token at [semgrep.dev](https://semgrep.dev/orgs/-/settings/tokens) and add it as a repository secret:
+
+```bash
+gh secret set SEMGREP_APP_TOKEN
+```
+
+{% endif -%}
 ## Contributing
 
 *Guidelines for how others can contribute to the project.*
