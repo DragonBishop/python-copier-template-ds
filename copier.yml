@@ -22,16 +22,14 @@ project_slug:
        | regex_replace('[^a-z0-9]+', '_')
        | regex_replace('^_+|_+$', '') }}
 
-# Display name: snake/kebab input is title-cased, anything else kept as typed.
+# Display name: title case, capitalizing each word's first letter so acronyms like ML stay intact.
 project_title:
   type: str
   when: false
   default: >-
-    {% if project_name | regex_search('^[a-z0-9_-]+$') -%}
-    {{ project_name | replace('_', ' ') | replace('-', ' ') | title }}
-    {%- else -%}
-    {{ project_name }}
-    {%- endif %}
+    {% for word in (project_name | replace('_', ' ') | replace('-', ' ')).split() -%}
+    {{ word[0] | upper }}{{ word[1:] }}{{ ' ' if not loop.last }}
+    {%- endfor %}
 
 module_name_source:
   type: str
