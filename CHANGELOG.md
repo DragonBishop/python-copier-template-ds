@@ -15,6 +15,19 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Pin GitHub Actions to commit SHAs
+## [2.1.0](https://github.com/DragonBishop/python-copier-template-ds/compare/v2.0.0...v2.1.0) (2026-10-18)
+
+
+### 🚀 Features
+
+* replace git-cliff with release-please changelog ([c777573](https://github.com/DragonBishop/python-copier-template-ds/commit/c7775738bff448b878c5bc760ff731fd61f909cb))
+* replace git-cliff with release-please changelog ([9c881d9](https://github.com/DragonBishop/python-copier-template-ds/commit/9c881d9792ca76e506368e919927b82478972fef))
+
+
+### 🐛 Bug Fixes
+
+* always title-case the project display name ([8368382](https://github.com/DragonBishop/python-copier-template-ds/commit/8368382ca95d418e6968af60c0f88fd55c371d83))
+
 ## [1.7.1] - 2026-09-30
 
 ### 🐛 Bug Fixes
