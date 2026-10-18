@@ -1,3 +1,9 @@
+## [2.0.1] - 2026-10-18
+
+### 🐛 Bug Fixes
+
+- Always title-case the project display name
+- Write GitHub release notes with git-cliff
 ## [2.0.0] - 2026-10-17
 
 ### 🚀 Features
