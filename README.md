@@ -34,12 +34,12 @@ These `copier.yml` questions shape the generated project's structure:
 
 | Question | Type | Default | Effect |
 | --- | --- | --- | --- |
-| `project_name` | `str` | none | Proper Case or snake_case. The snake_case form names the package, module, and repo; the display form (snake/kebab title-cased, else as typed) is used in titles. |
+| `project_name` | `str` | none | Proper Case or snake_case. The snake_case form names the package, module, and repo; the title-case display form is used in titles. |
 | `module_name_source` | choice | `project` | `project`: module is the snake_case project name. `custom`: asks for `module_name`. |
 | `module_name` | `str` | snake_case name | Only asked for `custom`. Lowercase Python identifier. |
 | `structure` | multi-select | `data`, `visualization`, `notebooks`, `reports` | `data`/`visualization`/`features`/`models` add subpackages to `src/{{module_name}}/`; `features` or `models` switch the README to data-science wording. `notebooks` adds starter notebooks; `reports` adds a write-up, cleaning log, and `figures/`. |
 | `python_version` | `str` | `3.14.7` | Pinned in `.python-version` and `requires-python`. |
-| `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please + git-cliff, plus PR-title lint. `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `semgrep`: Semgrep scan on PRs and daily; uses free Registry rules until a `SEMGREP_APP_TOKEN` secret is added, then your Semgrep AppSec Platform policies. `releases` and `semgrep` need `github_actions`. |
+| `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please, plus PR-title lint. `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `semgrep`: Semgrep scan on PRs and daily; uses free Registry rules until a `SEMGREP_APP_TOKEN` secret is added, then your Semgrep AppSec Platform policies. `releases` and `semgrep` need `github_actions`. |
 | `publish_to_pypi` | `bool` | `false` | Only asked with `github_actions`. Publishes to PyPI when a release is published. |
 
 `notebooks/`, `reports/`, `src/`, and `tests/` are one-time scaffolding: `copier update` won't re-create or overwrite them once they exist.
@@ -103,7 +103,7 @@ The configuration is stored in `.pre-commit-config.yaml`, and includes basic fil
 
 ### Github Actions
 
-Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check` and a `tests` job that runs `pytest` (`github_actions`); a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and commits a [git-cliff](https://github.com/orhun/git-cliff) `CHANGELOG.md` onto each release PR (`releases`); and a Semgrep scan (`semgrep`). `.yaml` issue templates are included.
+Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check` and a `tests` job that runs `pytest` (`github_actions`); a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and writes `CHANGELOG.md` on each release PR (`releases`); and a Semgrep scan (`semgrep`). `.yaml` issue templates are included.
 
 The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_CLIENT_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`.
 
@@ -136,7 +136,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
 │   └── workflows/
 │       ├── lint.yml                             # rumdl + yamllint + j2lint on this repo's own files
 │       ├── test-template.yml                    # renders every ctt.toml variant, then ruff/pytest against each
-│       └── release.yml                          # PR-title lint + release-please + git-cliff changelog
+│       └── release.yml                          # PR-title lint + release-please
 ├── template/                                    # _subdirectory in copier.yml; everything Copier renders
 │   ├── {{ _copier_conf.answers_file }}.jinja    # writes .copier-answers.yml into the generated project
 │   ├── .github/
@@ -147,7 +147,6 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
 │   │       ├── {% if 'releases' in tooling %}release.yml{% endif %}
 │   │       ├── {% if 'semgrep' in tooling %}semgrep.yml{% endif %}
 │   │       └── {% if publish_to_pypi %}publish.yml{% endif %}
-│   ├── {% if 'releases' in tooling %}cliff.toml{% endif %}
 │   ├── {% if 'releases' in tooling %}release-please-config.json{% endif %}.jinja
 │   ├── {% if 'releases' in tooling %}.release-please-manifest.json{% endif %}
 │   ├── {% if 'renovate' in tooling %}renovate.json{% endif %}
@@ -174,7 +173,6 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
 │   └── .gitattributes
 ├── copier.yml                                    # Template questions and defaults
 ├── ctt.toml                                      # copier-template-tester scenarios, renders into .ctt/, gitignored
-├── cliff.toml                                    # This repo's own changelog config
 ├── release-please-config.json
 ├── .release-please-manifest.json
 ├── .yamllint.yml
@@ -191,12 +189,12 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
   * **`ISSUE_TEMPLATE/`**: Issue templates for bug reports, documentation updates, feature proposals, and technical-debt resolution.
   * **`workflows/lint.yml`**: Lints this repository's own files. Runs `rumdl` for markdown, `yamllint` for YAML, and `j2lint` for the Jinja templates under `template/`.
   * **`workflows/test-template.yml`**: Renders every `ctt.toml` variant, then runs `ruff format --check`, `ruff check`, and `pytest` against each rendered output.
-  * **`workflows/release.yml`**: Lints the PR title against Conventional Commits. On push, `release-please` opens or updates a release PR, and `git-cliff` commits this repo's own `CHANGELOG.md` onto that PR's branch.
+  * **`workflows/release.yml`**: Lints the PR title against Conventional Commits. On push, `release-please` opens or updates a release PR with the version bump and `CHANGELOG.md`.
 * **`template/`**: The Copier source tree. A path wrapped in `{% if %}`/`{% endif %}` is included when its condition holds, and `{{ variable }}` names are filled in, both from the answers in [Template Options](#template-options).
   * **`{{ _copier_conf.answers_file }}.jinja`**: Renders `.copier-answers.yml` into the generated project, recording the answers used for later `copier update` runs.
   * **`.github/ISSUE_TEMPLATE/`**: Copied into the generated project as-is.
-  * **`.github/{% if 'github_actions' in tooling %}workflows{% endif %}/`**: Only included when `tooling` has `github_actions`. `lint.yml` runs ruff; `tests.yml.jinja` runs pytest with coverage. `release.yml` (with `releases`) runs PR-title lint plus release-please, with git-cliff committing `CHANGELOG.md` onto the release PR. `semgrep.yml` (with `semgrep`) runs `semgrep ci` on PRs and daily, with Registry rules (`p/default`, `p/github-actions`) when `SEMGREP_APP_TOKEN` isn't set, so forks and new repos still get a real scan. `publish.yml` (with `publish_to_pypi`) publishes to PyPI on release.
-  * **`{% if 'releases' in tooling %}cliff.toml{% endif %}`**, **`{% if 'releases' in tooling %}release-please-config.json{% endif %}.jinja`**, **`{% if 'releases' in tooling %}.release-please-manifest.json{% endif %}`**: Changelog and release-please config for the generated project, only included when `tooling` has `releases`. Uses `release-type: python`, which bumps `__version__` in the module's `__init__.py`.
+  * **`.github/{% if 'github_actions' in tooling %}workflows{% endif %}/`**: Only included when `tooling` has `github_actions`. `lint.yml` runs ruff; `tests.yml.jinja` runs pytest with coverage. `release.yml` (with `releases`) runs PR-title lint plus release-please, which writes `CHANGELOG.md` on the release PR. `semgrep.yml` (with `semgrep`) runs `semgrep ci` on PRs and daily, with Registry rules (`p/default`, `p/github-actions`) when `SEMGREP_APP_TOKEN` isn't set, so forks and new repos still get a real scan. `publish.yml` (with `publish_to_pypi`) publishes to PyPI on release.
+  * **`{% if 'releases' in tooling %}release-please-config.json{% endif %}.jinja`**, **`{% if 'releases' in tooling %}.release-please-manifest.json{% endif %}`**: release-please config for the generated project, only included when `tooling` has `releases`. Uses `release-type: python`, which bumps `__version__` in the module's `__init__.py`.
   * **`{% if 'renovate' in tooling %}renovate.json{% endif %}`**: Renovate config for the generated project, only included when `tooling` has `renovate`. Enables the `pre-commit` manager (off by default in Renovate), weekly lock-file maintenance, and semantic `chore(deps)` PR titles so the `release.yml` title lint passes.
   * **`{% if 'notebooks' in structure %}notebooks{% endif %}/`**: Starter notebooks for data processing and analysis.
   * **`{% if 'reports' in structure %}reports{% endif %}/`**: Write-up, cleaning log, and a `figures/` folder.
@@ -207,6 +205,6 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
   * **`justfile.jinja`**, **`.pre-commit-config.yaml.jinja`**, **`pyproject.toml.jinja`**, **`.python-version.jinja`**, **`.gitignore.jinja`**, **`.gitattributes`**: Generated project's root-level tooling config.
 * **`copier.yml`**: The questions and defaults documented in [Template Options](#template-options).
 * **`ctt.toml`**: [copier-template-tester](https://github.com/KyleKing/copier-template-tester) scenarios: `ci` (every `tooling` option), `no-ci` (no `tooling`), `no-notebooks`, `data-science` (every `structure` option, custom `module_name`, CI without releases, PyPI publishing), and `minimal` (nothing selected). Rendered into `.ctt/` by `uv run ctt`.
-* **`cliff.toml`**, **`release-please-config.json`**, **`.release-please-manifest.json`**: This repository's own git-cliff and release-please configuration. Uses `release-type: simple`, with `toml` `extra-files` entries for `pyproject.toml`'s `version` and this repository's `uv.lock` entry.
+* **`release-please-config.json`**, **`.release-please-manifest.json`**: This repository's own release-please configuration. Uses `release-type: simple`, with `toml` `extra-files` entries for `pyproject.toml`'s `version` and this repository's `uv.lock` entry.
 * **`.yamllint.yml`**: `yamllint` config for this repository's own YAML.
 * **`pyproject.toml`**, **`.python-version`**, **`uv.lock`**: This repository's own dev-tooling environment: `copier`, `copier-template-tester`, `rumdl`, `yamllint`, and `j2lint`. See [Development](#development).

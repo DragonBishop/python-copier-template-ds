@@ -38,13 +38,13 @@
   ],
   "packageRules": [
     {
-      "description": "Template deps reach generated projects: fix(deps) so release-please cuts a patch release",
+      "description": "Template deps reach generated projects: fix(deps), listed under Bug Fixes",
       "matchFileNames": ["template/**", "copier.yml"],
       "semanticCommitType": "fix",
       "semanticCommitScope": "deps"
     },
     {
-      "description": "Repo-only tooling: chore(deps), skipped by git-cliff and no release",
+      "description": "Repo-only tooling: chore(deps), listed under Miscellaneous Tasks",
       "matchFileNames": ["pyproject.toml", "uv.lock", ".github/**", ".python-version"],
       "semanticCommitType": "chore",
       "semanticCommitScope": "deps"
