@@ -34,7 +34,7 @@ These `copier.yml` questions shape the generated project's structure:
 
 | Question | Type | Default | Effect |
 | --- | --- | --- | --- |
-| `project_name` | `str` | none | Proper Case or snake_case. The snake_case form names the package, module, and repo; the display form (snake/kebab title-cased, else as typed) is used in titles. |
+| `project_name` | `str` | none | Proper Case or snake_case. The snake_case form names the package, module, and repo; the title-case display form is used in titles. |
 | `module_name_source` | choice | `project` | `project`: module is the snake_case project name. `custom`: asks for `module_name`. |
 | `module_name` | `str` | snake_case name | Only asked for `custom`. Lowercase Python identifier. |
 | `structure` | multi-select | `data`, `visualization`, `notebooks`, `reports` | `data`/`visualization`/`features`/`models` add subpackages to `src/{{module_name}}/`; `features` or `models` switch the README to data-science wording. `notebooks` adds starter notebooks; `reports` adds a write-up, cleaning log, and `figures/`. |
