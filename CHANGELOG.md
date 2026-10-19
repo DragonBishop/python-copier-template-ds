@@ -1,3 +1,12 @@
+## [2.1.0] - 2026-10-19
+
+### 🚀 Features
+
+- *(renovate)* Group minor and patch updates into one PR
+
+### ⚙️ Miscellaneous Tasks
+
+- Skip tests on release-only PRs
 ## [2.0.0] - 2026-10-19
 
 ### 🚀 Features
