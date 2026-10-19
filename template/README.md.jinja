@@ -1,4 +1,11 @@
-# {{project_name}}
+{%- set modeling = 'features' in structure or 'models' in structure -%}
+{%- set src_dirs = [
+  ('data', 'Scripts to fetch, clean, or generate data'),
+  ('features', 'Scripts to turn raw data into features for modeling'),
+  ('models', 'Scripts to train models and generate predictions'),
+  ('visualization', 'Scripts to create exploratory and results-oriented visualizations'),
+] | selectattr('0', 'in', structure) | list -%}
+# {{ project_name }}
 
 Brief description of the project, its purpose, and the main problem it solves.
 
@@ -16,7 +23,7 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ## Project Overview
 
-*Provide a detailed explanation of the business or research problem. What are the objectives of this data science project? What is the expected impact?*
+*Provide a detailed explanation of the business or research problem. What are the objectives of this {{ 'data science project' if modeling else 'analysis' }}? What is the expected impact?*
 
 ## Data Sources
 
@@ -31,32 +38,23 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ```text
 ├── justfile                # Command runner recipes (setup, tests, etc.)
-├── models                  # Trained and serialized models, model predictions, or summaries
-{% if include_notebooks -%}
+{% if 'notebooks' in structure -%}
 ├── notebooks               # Jupyter notebooks
 │   ├── data_processing_notebook.ipynb  # Data cleaning and integrity checks
 │   └── data_analysis_notebook.ipynb    # Exploratory analysis and findings
 {% endif -%}
 ├── pyproject.toml          # Configuration file for project and dependency management
-{% if include_reports -%}
+{% if 'reports' in structure -%}
 ├── reports                 # Generated analysis and documentation
 │   ├── REPORT.md           # Full write-up: summary, methodology, findings
 │   └── cleaning_log.md     # Running log of data-cleaning decisions
 {% endif -%}
-{% if include_module -%}
 ├── src
-│   └── {{ module_name }}     # Main project module (importable package)
-│       ├── data            # Scripts to fetch, clean, or generate data
-│       ├── features        # Scripts to turn raw data into features for modeling
-│       ├── models          # Scripts to train models and generate predictions
-│       └── visualization   # Scripts to create exploratory and results-oriented visualizations
-{% else -%}
-├── src
-│   ├── data                # Scripts to fetch, clean, or generate data
-│   ├── features            # Scripts to turn raw data into features for modeling
-│   ├── models              # Scripts to train models and generate predictions
-│   └── visualization       # Scripts to create exploratory and results-oriented visualizations
-{% endif -%}
+│   └── {{ module_name }}{{ ' ' * (20 - module_name | length) }}# Importable package, installed in editable mode by `uv sync`
+│       {{ '└──' if not src_dirs else '├──' }} __init__.py
+{% for name, desc in src_dirs -%}
+│       {{ '└──' if loop.last else '├──' }} {{ name }}{{ ' ' * (16 - name | length) }}# {{ desc }}
+{% endfor -%}
 ├── tests                   # Unit tests and integration tests
 │   ├── __init__.py
 │   └── test_example.py
@@ -69,8 +67,8 @@ Brief description of the project, its purpose, and the main problem it solves.
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/{{ project_name }}.git
-cd {{ project_name }}
+git clone https://github.com/username/{{ module_name }}.git
+cd {{ module_name }}
 ```
 
 ### Option 1: uv
@@ -98,41 +96,44 @@ poetry shell
 
 ## Usage
 
-*Explain how to run the project. Provide examples of the commands needed to run data pipelines, training scripts, or start up applications/dashboards.*
+*Explain how to run the project.{% if modeling %} Provide examples of the commands needed to run data pipelines, training scripts, or start up applications/dashboards.{% endif %}*
 
-{% if include_module -%}
-The package lives under `src/{{ module_name }}` using an src layout. Once you've run `uv sync`, it installs in editable mode, so it's importable from anywhere in the project without extra path setup:
+{% if 'notebooks' in structure -%}
+Start with `notebooks/data_processing_notebook.ipynb` to clean and validate the data{% if 'reports' in structure %}, logging changes in `reports/cleaning_log.md` as you go{% endif %}.
+Move to `notebooks/data_analysis_notebook.ipynb` for exploratory analysis{% if 'reports' in structure %}, then write up findings in `reports/REPORT.md`{% endif %}.
+
+{% endif -%}
+The package lives under `src/{{ module_name }}/` using an src layout. Once you've run `uv sync`, it installs in editable mode, so it's importable from notebooks and scripts anywhere in the project without extra path setup.
+{%- if 'data' in structure or 'models' in structure %}
 
 ```bash
-# Example: Run the data ingestion pipeline
+{% if 'data' in structure -%}
+# Example: run the data ingestion pipeline (add src/{{ module_name }}/data/make_dataset.py)
 uv run python -m {{ module_name }}.data.make_dataset
-
-# Example: Train the model
+{% endif -%}
+{% if 'models' in structure -%}
+# Example: train the model (add src/{{ module_name }}/models/train_model.py)
 uv run python -m {{ module_name }}.models.train_model
+{% endif -%}
 ```
-{% else -%}
-This project has no installable package. It's a sandbox for notebooks and standalone scripts. Organize scripts under `src/` in `data/`, `features/`, `models/`, and `visualization/`, and save any trained models to `models/` at the project root.
-
-```bash
-# Example: run a standalone script
-uv run python some_script.py
-```
-{% endif %}
-`make_dataset.py` and `train_model.py` are placeholders. Add scripts under `src/{{ module_name }}/data` and `src/{{ module_name }}/models` as your pipeline takes shape.
+{%- endif %}
 
 ## Methodology
 
-*Briefly describe the data science lifecycle for this project:*
+*Briefly describe the {{ 'data science' if modeling else 'data analysis' }} lifecycle for this project:*
 
 1. **Data Cleaning & Preprocessing:** How was the data prepared and cleaned?
 2. **Exploratory Data Analysis (EDA):** What were the key findings and distributions?
+{% if modeling -%}
 3. **Feature Engineering:** What new features were created or transformed?
 4. **Modeling:** Which algorithms were evaluated? How were hyperparameters tuned?
 5. **Evaluation:** What metrics were used (e.g., RMSE, F1-score, ROC-AUC) to validate the model?
-
+{% else -%}
+3. **Evaluation:** What metrics or comparisons were used to validate the findings?
+{% endif %}
 ## Results
 
-*Summarize the final results of the analysis or model. Include key metrics, business insights, and potentially a visual representation{% if include_reports %} (e.g., a link to a confusion matrix or feature importance plot in the `reports/` folder){% endif %}.*
+*Summarize the final results of the {{ 'analysis or model' if modeling else 'analysis' }}. Include key metrics, business insights, and potentially a visual representation{% if 'reports' in structure %} (e.g., a link to {{ 'a confusion matrix or feature importance plot' if modeling else 'a chart' }} in `reports/`){% endif %}.*
 
 ## Contributing
 
