@@ -1,3 +1,14 @@
+## [2.1.1] - 2026-10-19
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update template dependencies
+- *(deps)* Update actions/checkout action to v7
+- *(deps)* Update actions/setup-python action to v7
+
+### 📚 Documentation
+
+- Copy the template from its full git URL
 ## [2.1.0] - 2026-10-19
 
 ### 🚀 Features
