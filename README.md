@@ -125,7 +125,7 @@ which installs [Copier](https://github.com/copier-org/copier), [copier-template-
 * `uv run yamllint .` lints this repository's own YAML: workflows, issue templates, and `copier.yml`.
 * `uv run j2lint template -i jinja-statements-delimiter single-statement-per-line jinja-statements-indentation` lints the Jinja templates under `template/`.
 
-CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, plus renders every `ctt.toml` variant and runs `ruff`/`pytest` against the rendered output.
+CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, plus renders every `ctt.toml` variant and runs `ruff`/`pytest` against the rendered output. `semgrep.yml` scans the repo on PRs, pushes to `data`, and manual runs.
 
 ---
 
@@ -137,6 +137,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
 │   └── workflows/
 │       ├── lint.yml                             # rumdl + yamllint + j2lint on this repo's own files
 │       ├── test-template.yml                    # renders every ctt.toml variant, then ruff/pytest against each
+│       ├── semgrep.yml                          # Semgrep scan on pushes, PRs, and manual runs
 │       └── release.yml                          # commit lint + release-please + git-cliff changelog
 ├── template/                                    # _subdirectory in copier.yml; everything Copier renders
 │   ├── {{ _copier_conf.answers_file }}.jinja    # writes .copier-answers.yml into the generated project
@@ -192,6 +193,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
   * **`ISSUE_TEMPLATE/`**: Issue templates for bug reports, documentation updates, feature proposals, and technical-debt resolution.
   * **`workflows/lint.yml`**: Lints this repository's own files. Runs `rumdl` for markdown, `yamllint` for YAML, and `j2lint` for the Jinja templates under `template/`.
   * **`workflows/test-template.yml`**: Renders every `ctt.toml` variant, then runs `ruff format --check`, `ruff check`, and `pytest` against each rendered output.
+  * **`workflows/semgrep.yml`**: Runs `semgrep ci` on pushes, PRs, and manual runs with the `SEMGREP_APP_TOKEN` secret.
   * **`workflows/release.yml`**: Lints each PR commit against Conventional Commits. On push, `release-please` opens or updates a release PR, and `git-cliff` commits this repo's own `CHANGELOG.md` onto that PR's branch.
 * **`template/`**: The Copier source tree. A path wrapped in `{% if %}`/`{% endif %}` is included when its condition holds, and `{{ variable }}` names are filled in, both from the answers in [Template Options](#template-options).
   * **`{{ _copier_conf.answers_file }}.jinja`**: Renders `.copier-answers.yml` into the generated project, recording the answers used for later `copier update` runs.
