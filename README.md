@@ -22,6 +22,7 @@ copier copy gh:DragonBishop/python-copier-template-ds path/to/destination
   * [pytest](#pytest)
   * [prek](#prek)
   * [Github Actions](#github-actions)
+  * [Commits and PRs](#commits-and-prs)
 * [Development](#development)
 * [Repository Structure](#repository-structure)
   * [File Descriptions](#file-descriptions)
@@ -37,7 +38,7 @@ These `copier.yml` questions shape the generated project's structure:
 | `project_name` | `str` | none | Proper Case, e.g. `My Project`. Used as-is in titles; its snake_case form (`my_project`) names the package, module, and repo. |
 | `structure` | multi-select | `data`, `visualization`, `notebooks`, `reports` | `data`/`visualization`/`features`/`models` add subpackages to `src/{{module_name}}/`; `features` or `models` switch the README to data-science wording. `notebooks` adds starter notebooks; `reports` adds a write-up, cleaning log, and `figures/`. |
 | `python_version` | `str` | `3.14.7` | Pinned in `.python-version` and `requires-python`. |
-| `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please + git-cliff, plus Conventional Commits lint on each PR's commits. `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `semgrep`: Semgrep scan on pushes, PRs, and manual runs with your Semgrep AppSec Platform policies (`SEMGREP_APP_TOKEN` secret required). `pypi`: publishes to PyPI when a release is published. `releases` and `semgrep` need `github_actions`; `pypi` needs `releases`. |
+| `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please + git-cliff, plus commit lint ([Commits and PRs](#commits-and-prs)). `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `semgrep`: Semgrep scan on pushes, PRs, and manual runs with your Semgrep AppSec Platform policies (`SEMGREP_APP_TOKEN` secret required). `pypi`: publishes to PyPI when a release is published. `releases` and `semgrep` need `github_actions`; `pypi` needs `releases`. |
 
 `notebooks/`, `reports/`, `src/`, and `tests/` are one-time scaffolding: `copier update` won't re-create or overwrite them once they exist.
 
@@ -102,7 +103,17 @@ The configuration is stored in `.pre-commit-config.yaml`, and includes basic fil
 
 Optional GitHub workflows: a `lint` job that runs `ruff check` and `ruff format --check` and a `tests` job that runs `pytest` (`github_actions`); a `release` workflow that versions with [release-please](https://github.com/googleapis/release-please) and commits a [git-cliff](https://github.com/orhun/git-cliff) `CHANGELOG.md` onto each release PR (`releases`); and a Semgrep scan (`semgrep`). `.yaml` issue templates are included.
 
-The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_CLIENT_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`. Squash merges bypass the commit lint: if you expect to use them, give PRs Conventional Commit titles, or turn off squash merging on the repo:
+The `release` workflow authenticates release-please with a GitHub App: install a GitHub App with `Contents: Read and write` and `Pull requests: Read and write` permissions on the generated repo, then set two repository secrets: `RELEASE_PLEASE_APP_CLIENT_ID` and `RELEASE_PLEASE_APP_PRIVATE_KEY`.
+
+### Commits and PRs
+
+A generated project's PRs must pass these checks:
+
+* **`lint` and `tests`** (`github_actions`): ruff and pytest must pass.
+* **Commit lint** (`releases`): every non-merge commit subject in the PR must be a [Conventional Commit](https://www.conventionalcommits.org/), `type(scope)!: description`, with `type` one of `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`, or `revert`. release-please versions from the same messages: `feat` bumps the minor version, `fix` the patch, and `!` or a `BREAKING CHANGE:` footer the major. Renovate (`renovate`) writes semantic `chore(deps)` commits, so its PRs pass.
+* **Semgrep** (`semgrep`): any finding fails the PR.
+
+Squash merges replace a PR's commits with one commit titled after the PR, which the lint never checks. If you squash, give PRs Conventional Commit titles, or turn off squash merging:
 
 ```shell
 gh api -X PATCH repos/{owner}/{repo} -F allow_squash_merge=false
@@ -200,7 +211,7 @@ CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, 
   * **`.github/ISSUE_TEMPLATE/`**: Copied into the generated project as-is.
   * **`.github/{% if 'github_actions' in tooling %}workflows{% endif %}/`**: Only included when `tooling` has `github_actions`. `lint.yml` runs ruff; `tests.yml.jinja` runs pytest with coverage. `release.yml` (with `releases`) runs commit lint plus release-please, with git-cliff committing `CHANGELOG.md` onto the release PR. `semgrep.yml` (with `semgrep`) runs `semgrep ci` on pushes, PRs, and manual runs with the `SEMGREP_APP_TOKEN` secret. `publish.yml` (with `pypi`) publishes to PyPI on release.
   * **`{% if 'releases' in tooling %}cliff.toml{% endif %}`**, **`{% if 'releases' in tooling %}release-please-config.json{% endif %}.jinja`**, **`{% if 'releases' in tooling %}.release-please-manifest.json{% endif %}`**: Changelog and release-please config for the generated project, only included when `tooling` has `releases`. Uses `release-type: python`, which bumps `__version__` in the module's `__init__.py`.
-  * **`{% if 'renovate' in tooling %}renovate.json{% endif %}`**: Renovate config for the generated project, only included when `tooling` has `renovate`. Enables the `pre-commit` manager (off by default in Renovate), weekly lock-file maintenance, and semantic `chore(deps)` commits so the `release.yml` commit lint passes.
+  * **`{% if 'renovate' in tooling %}renovate.json{% endif %}`**: Renovate config for the generated project, only included when `tooling` has `renovate`. Enables the `pre-commit` manager (off by default in Renovate), weekly lock-file maintenance, and semantic `chore(deps)` commits.
   * **`{% if 'notebooks' in structure %}notebooks{% endif %}/`**: Starter notebooks for data processing and analysis.
   * **`{% if 'reports' in structure %}reports{% endif %}/`**: Write-up, cleaning log, and a `figures/` folder.
   * **`README.md.jinja`**: The generated project's own README. Its directory tree lists only the selected `structure` folders, and selecting `features` or `models` switches it to data-science wording.
