@@ -1,5 +1,5 @@
 [project]
-name = "{{ project_name }}"
+name = "{{ module_name }}"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">={{ python_version }}"
@@ -11,20 +11,17 @@ classifiers = [
   "Programming Language :: Python :: {{ python_version.split('.')[0] }}.{{ python_version.split('.')[1] }}",
 ]
 dependencies = [
-{%- if include_notebooks %}
+{%- if 'notebooks' in structure %}
   "ipykernel>=6.29.5",
 {%- endif %}
 ]
-{% if include_module -%}
 dynamic = ["version"]
-{% else -%}
-version = "0.0.1"
-{% endif %}
+
 [dependency-groups]
 dev = [
   "pytest>=9.1.1",
   "pytest-cov>=7.1.0",
-{%- if include_notebooks %}
+{%- if 'notebooks' in structure %}
   "nbwipers>=0.7.1",
 {%- endif %}
   "prek>=0.5.0",
@@ -32,11 +29,11 @@ dev = [
 lint = [
   "ruff>=0.16.5",
 ]
-{% if include_module %}
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-{% endif %}
+
 [tool.coverage.report]
 exclude_also = [
   "def __repr__",
@@ -50,7 +47,7 @@ exclude_also = [
   'class .*\bProtocol\):',
   '@(abc\.)?abstractmethod',
 ]
-{% if include_module %}
+
 [tool.hatch.version]
 path = "src/{{ module_name }}/__init__.py"
 
@@ -59,18 +56,17 @@ packages = ["src/{{ module_name }}"]
 
 [tool.hatch.build.targets.sdist]
 exclude = [
-{%- if include_notebooks %}
+{%- if 'notebooks' in structure %}
   "*.ipynb",
 {%- endif %}
   ".venv",
   "uv.lock",
 ]
-{% endif %}
-{%- if include_notebooks %}
+{% if 'notebooks' in structure %}
 [tool.nbwipers]
 strip-kernel-info = true
-{% endif %}
-{% if use_rumdl %}
+{% endif -%}
+{% if 'rumdl' in tooling %}
 [tool.rumdl]
 disable = ["MD013"]
 exclude = ["CHANGELOG.md"]
@@ -79,7 +75,6 @@ exclude = ["CHANGELOG.md"]
 siblings-only = true
 {% endif %}
 [tool.uv]
+# 7-day supply-chain cooldown, first in tool.uv for Semgrep
+exclude-newer = "7 days"
 default-groups = ["dev"]
-{% if not include_module -%}
-package = false
-{% endif -%}

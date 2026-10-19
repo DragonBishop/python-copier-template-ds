@@ -13,16 +13,16 @@ setup: install git-setup
 
 # run test coverage and create
 test-cov:
-  uv run pytest{% if include_module %} --cov=src/{{ module_name }} --cov-report=lcov:lcov.info --cov-report=term-missing --cov-report html --cov-report xml{% endif %}
+  uv run pytest --cov=src/{{ module_name }} --cov-report=lcov:lcov.info --cov-report=term-missing --cov-report html --cov-report xml
 
 # update packages and uv lock file
 update:
   uv sync -U --all-groups --all-extras --inexact
 
-# set up {% if include_notebooks %}git filters (nbwipers) and {% endif %}pre-commit hooks
+# set up {% if 'notebooks' in structure %}git filters (nbwipers) and {% endif %}pre-commit hooks
 git-setup:
   @[ -d .git ] || git init -b main
-{%- if include_notebooks %}
+{%- if 'notebooks' in structure %}
   uv run nbwipers install local
 {%- endif %}
   uv run prek install
