@@ -141,9 +141,9 @@ uv run python -m {{ module_name }}.models.train_model
 {% if 'semgrep' in tooling -%}
 ## Security Scanning
 
-[Semgrep](https://semgrep.dev) scans every pull request and runs daily (`.github/workflows/semgrep.yml`). Findings fail the check.
+[Semgrep](https://semgrep.dev) scans every pull request and push to `main` (`.github/workflows/semgrep.yml`). Findings fail the check.
 
-Without a token it uses the free Semgrep Registry rules (`p/default`, `p/github-actions`). To use your Semgrep AppSec Platform policies and dashboard instead, create a token at [semgrep.dev](https://semgrep.dev/orgs/-/settings/tokens) and add it as a repository secret:
+Create a token at [semgrep.dev](https://semgrep.dev/orgs/-/settings/tokens) and add it as a repository secret:
 
 ```bash
 gh secret set SEMGREP_APP_TOKEN
