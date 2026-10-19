@@ -6,6 +6,8 @@ requires-python = ">=3.14.7"
 dependencies = []
 
 [tool.uv]
+# 7-day supply-chain cooldown, first in tool.uv for Semgrep
+exclude-newer = "7 days"
 package = false
 
 [dependency-groups]
