@@ -1,3 +1,34 @@
+## [2.0.0] - 2026-10-19
+
+### 🚀 Features
+
+- Add support for testing commit messages in cliff.toml
+- Add renovate configuration for dependency management
+- Add Renovate config as a tooling option
+- [**breaking**] Replace project questions with structure and tooling multi-selects
+- Add Semgrep tooling option
+- Add 7-day dependency cooldown
+- Lint PR commits instead of PR titles
+
+### 🐛 Bug Fixes
+
+- Add README.md to _skip_if_exists in copier.yml
+- Write GitHub release notes with git-cliff
+
+### 📚 Documentation
+
+- Consolidate commit and PR requirements into one section
+
+### ♻️ Refactor
+
+- [**breaking**] Always generate the module under src/
+- [**breaking**] Merge the README variants and gate notebooks/reports on structure
+- [**breaking**] Gate workflows and release files on tooling choices
+
+### ⚙️ Miscellaneous Tasks
+
+- Pin GitHub Actions to commit SHAs
+- Scan this repo with Semgrep
 ## [1.7.1] - 2026-09-30
 
 ### 🐛 Bug Fixes
