@@ -109,7 +109,7 @@ The `release` workflow authenticates release-please with a GitHub App: install a
 
 A generated project's PRs must pass these checks:
 
-* **`lint` and `tests`** (`github_actions`): ruff and pytest must pass.
+* **`lint` and `tests`** (`github_actions`): ruff and pytest must pass. With `releases`, `tests` is skipped on release-please PRs that only change version files and `CHANGELOG.md`.
 * **Commit lint** (`releases`): every non-merge commit subject in the PR must be a [Conventional Commit](https://www.conventionalcommits.org/), `type(scope)!: description`, with `type` one of `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`, or `revert`. release-please versions from the same messages: `feat` bumps the minor version, `fix` the patch, and `!` or a `BREAKING CHANGE:` footer the major. Renovate (`renovate`) writes semantic `chore(deps)` commits, so its PRs pass.
 * **Semgrep** (`semgrep`): any finding fails the PR.
 

@@ -9,7 +9,29 @@ permissions:
   contents: read
 
 jobs:
+{%- if 'releases' in tooling %}
+  release-only:
+    {% raw %}if: ${{ github.event_name == 'pull_request' }}{% endraw %}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      {% raw %}skip: ${{ steps.files.outputs.skip }}{% endraw %}
+    steps:
+      - id: files
+        env:
+          {% raw %}GH_TOKEN: ${{ github.token }}{% endraw %}
+          {% raw %}PR: ${{ github.event.pull_request.number }}{% endraw %}
+          RELEASE_FILES: '\.release-please-manifest\.json|CHANGELOG\.md|src/{{ module_name }}/__init__\.py'
+        run: |
+          other_files=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --jq '.[].filename' | grep -v -x -E "$RELEASE_FILES" || true)
+          echo "skip=$([ -z "$other_files" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+{%- endif %}
   tests:
+{%- if 'releases' in tooling %}
+    needs: release-only
+    {% raw %}if: ${{ !cancelled() && needs.release-only.outputs.skip != 'true' }}{% endraw %}
+{%- endif %}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
