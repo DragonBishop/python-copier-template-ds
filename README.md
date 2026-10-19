@@ -8,7 +8,7 @@ This is a template to generate a data science focused python project built with 
 Get started with the following command:
 
 ```shell
-copier copy gh:DragonBishop/python-copier-template-ds path/to/destination
+copier copy https://github.com/DragonBishop/python-copier-template-ds.git path/to/destination
 ```
 
 ## Table of Contents
