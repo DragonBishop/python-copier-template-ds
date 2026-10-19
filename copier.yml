@@ -1,63 +1,74 @@
 _subdirectory: template
+
+# Defaults map v1 answers on update; on a fresh copy those answers are undefined.
+
 project_name:
   type: str
-  help: What is your project name?
+  help: Project name (Proper Case)
+  validator: >-
+    {% if not (project_name | regex_search('^[A-Z][A-Za-z0-9]*( [A-Z0-9][A-Za-z0-9]*)*$')) %}
+    Use Proper Case words separated by spaces, e.g. My Project.
+    {% endif %}
 
-project_type:
-  type: str
-  help: What kind of project is this?
-  choices:
-    Data Science (adds models, feature engineering to src/): data_science
-    Data Analysis (src/ has just data + visualization): data_analysis
-  default: data_analysis
-
-include_module:
-  type: bool
-  help: Include a Python module for shared functions/classes across notebooks?
-  default: true
-
+# snake_case form: package, module, repo name.
 module_name:
   type: str
-  help: What is your Python module name?
-  default: "{{ project_name|lower|replace('-', '_') }}"
-  when: "{{ include_module }}"
+  when: false
+  default: "{{ project_name | lower | replace(' ', '_') }}"
 
-include_notebooks:
-  type: bool
-  help: Include a notebooks/ directory for Jupyter notebooks?
-  default: true
-
-include_reports:
-  type: bool
-  help: Include a reports/ directory for write-ups and figures?
-  default: true
+structure:
+  type: str
+  multiselect: true
+  help: Project structure
+  choices:
+    "src/<module>/data": data
+    "src/<module>/visualization": visualization
+    "src/<module>/features": features
+    "src/<module>/models": models
+    notebooks/: notebooks
+    reports/: reports
+  default: >-
+    {{ (['data', 'visualization']
+        + (['features', 'models'] if project_type | default('data_analysis') == 'data_science' else [])
+        + (['notebooks'] if include_notebooks | default(true) else [])
+        + (['reports'] if include_reports | default(true) else [])) | tojson }}
 
 python_version:
   type: str
-  help: what is your python version?
+  help: Python version
   default: 3.14.7
 
-github_actions:
-  type: bool
-  help: Add Github Actions CI (lint/test checks, plus release-please + git-cliff versioning and changelog automation)?
-  default: true
-
-use_rumdl:
-  type: bool
-  help: Include markdown linting?
-  default: true
-
-publish_to_pypi:
-  type: bool
-  help: Add a GitHub Actions job to publish this package to PyPI on release?
-  default: false
-  when: "{{ include_module and github_actions }}"
+tooling:
+  type: str
+  multiselect: true
+  help: Tooling
+  choices:
+    "GitHub Actions: lint + tests": github_actions
+    "Releases: release-please + git-cliff (needs Actions)": releases
+    "rumdl: markdown linting": rumdl
+    "Renovate: dependency PRs (needs the Renovate app)": renovate
+    "PyPI: publish on release (needs Releases)": pypi
+  default: >-
+    {% set enabled = {
+      'github_actions': github_actions | default(true),
+      'releases': github_actions | default(true),
+      'rumdl': use_rumdl | default(true),
+      'renovate': true,
+      'pypi': publish_to_pypi | default(false),
+    } %}
+    {{ enabled.items() | selectattr('1') | map(attribute='0') | list | tojson }}
+  validator: >-
+    {% set requires = {'releases': 'github_actions', 'pypi': 'releases'} %}
+    {% for option, required in requires.items() if option in tooling and required not in tooling %}
+    {{ option }} needs {{ required }}.
+    {% endfor %}
 
 _skip_if_exists:
   - "README.md"
   - "notebooks/**"
   - "reports/**"
   - "src/**"
+  - "tests/**"
 
 _exclude:
   - "~*"
@@ -69,6 +80,7 @@ _exclude:
   - "{% if _copier_operation == 'update' %}notebooks{% endif %}"
   - "{% if _copier_operation == 'update' %}reports{% endif %}"
   - "{% if _copier_operation == 'update' %}src{% endif %}"
+  - "{% if _copier_operation == 'update' %}tests{% endif %}"
 
 # copy only: on update it runs before local changes are re-applied.
 _tasks:
