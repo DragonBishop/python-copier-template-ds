@@ -12,7 +12,7 @@ classifiers = [
 ]
 dependencies = [
 {%- if 'notebooks' in structure %}
-  "ipykernel>=6.29.5",
+  "ipykernel>=6.31.0",
 {%- endif %}
 ]
 dynamic = ["version"]
@@ -22,12 +22,12 @@ dev = [
   "pytest>=9.1.1",
   "pytest-cov>=7.1.0",
 {%- if 'notebooks' in structure %}
-  "nbwipers>=0.7.1",
+  "nbwipers>=0.7.2",
 {%- endif %}
-  "prek>=0.5.0",
+  "prek>=0.5.5",
 ]
 lint = [
-  "ruff>=0.16.5",
+  "ruff>=0.17.0",
 ]
 
 [build-system]
