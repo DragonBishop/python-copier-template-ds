@@ -1,3 +1,16 @@
+## [2.1.0] - 2026-10-19
+
+### 🚀 Features
+
+- Lint PR commits instead of PR titles
+
+### ♻️ Refactor
+
+- Require SEMGREP_APP_TOKEN in the Semgrep workflow
+
+### ⚙️ Miscellaneous Tasks
+
+- Scan this repo with Semgrep
 ## [2.0.1] - 2026-10-18
 
 ### 🐛 Bug Fixes
