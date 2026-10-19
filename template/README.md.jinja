@@ -141,7 +141,7 @@ uv run python -m {{ module_name }}.models.train_model
 {% if 'semgrep' in tooling -%}
 ## Security Scanning
 
-[Semgrep](https://semgrep.dev) scans every pull request and push to `main` (`.github/workflows/semgrep.yml`). Findings fail the check.
+[Semgrep](https://semgrep.dev) scans every pull request and push to `main` (`.github/workflows/semgrep.yml`).
 
 Create a token at [semgrep.dev](https://semgrep.dev/orgs/-/settings/tokens) and add it as a repository secret:
 
@@ -156,9 +156,27 @@ gh secret set SEMGREP_APP_TOKEN
 
 1. Fork the repository.
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+3. Commit your changes (`git commit -m '{{ 'feat: add AmazingFeature' if 'releases' in tooling else 'Add some AmazingFeature' }}'`).
 4. Push to the branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
+{%- if 'github_actions' in tooling %}
+
+### Commits and PRs
+
+Pull requests must pass these checks:
+
+* **`lint` and `tests`**: ruff and pytest must pass.
+{%- if 'releases' in tooling %}
+* **Commit lint**: every non-merge commit subject must be a [Conventional Commit](https://www.conventionalcommits.org/), `type(scope)!: description`, with `type` one of `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`, or `revert`. release-please versions from the same messages: `feat` bumps the minor version, `fix` the patch, and `!` or a `BREAKING CHANGE:` footer the major.
+{%- endif %}
+{%- if 'semgrep' in tooling %}
+* **Semgrep**: any finding fails the PR ([Security Scanning](#security-scanning)).
+{%- endif %}
+{%- if 'releases' in tooling %}
+
+Squash merges replace a PR's commits with one commit titled after the PR, which the commit lint never checks. If you squash, give the PR a Conventional Commit title.
+{%- endif %}
+{%- endif %}
 
 ## License
 
