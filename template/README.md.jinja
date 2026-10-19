@@ -1,0 +1,203 @@
+{%- set modeling = 'features' in structure or 'models' in structure -%}
+{%- set src_dirs = [
+  ('data', 'Scripts to fetch, clean, or generate data'),
+  ('features', 'Scripts to turn raw data into features for modeling'),
+  ('models', 'Scripts to train models and generate predictions'),
+  ('visualization', 'Scripts to create exploratory and results-oriented visualizations'),
+] | selectattr('0', 'in', structure) | list -%}
+# {{ project_name }}
+
+Brief description of the project, its purpose, and the main problem it solves.
+
+## Table of Contents
+
+* [Project Overview](#project-overview)
+* [Data Sources](#data-sources)
+* [Directory Structure](#directory-structure)
+* [Environment Setup](#environment-setup)
+* [Usage](#usage)
+* [Methodology](#methodology)
+* [Key Insights & Results](#results)
+{% if 'semgrep' in tooling -%}
+* [Security Scanning](#security-scanning)
+{% endif -%}
+* [Contributing](#contributing)
+* [License](#license)
+
+## Project Overview
+
+*Provide a detailed explanation of the business or research problem. What are the objectives of this {{ 'data science project' if modeling else 'analysis' }}? What is the expected impact?*
+
+## Data Sources
+
+*Describe the data used in this project.*
+
+* **Source 1:** [Link or description]
+* **Source 2:** [Link or description]
+
+> **Note:** Raw or sensitive data should never be committed to the repository. Add data directories to your `.gitignore`.
+
+## Directory Structure
+
+```text
+├── justfile                # Command runner recipes (setup, tests, etc.)
+{% if 'notebooks' in structure -%}
+├── notebooks               # Jupyter notebooks
+│   ├── data_processing_notebook.ipynb  # Data cleaning and integrity checks
+│   └── data_analysis_notebook.ipynb    # Exploratory analysis and findings
+{% endif -%}
+├── pyproject.toml          # Configuration file for project and dependency management
+{% if 'reports' in structure -%}
+├── reports                 # Generated analysis and documentation
+│   ├── REPORT.md           # Full write-up: summary, methodology, findings
+│   └── cleaning_log.md     # Running log of data-cleaning decisions
+{% endif -%}
+├── src
+│   └── {{ module_name }}{{ ' ' * (20 - module_name | length) }}# Importable package, installed in editable mode by `uv sync`
+│       {{ '└──' if not src_dirs else '├──' }} __init__.py
+{% for name, desc in src_dirs -%}
+│       {{ '└──' if loop.last else '├──' }} {{ name }}{{ ' ' * (16 - name | length) }}# {{ desc }}
+{% endfor -%}
+├── tests                   # Unit tests and integration tests
+│   ├── __init__.py
+│   └── test_example.py
+└── README.md               # The top-level README for developers using this project.
+```
+
+## Environment Setup
+
+*Instructions on how to set up the isolated computational environment to run the analysis scripts. Choose the package manager that fits your workflow.*
+
+```bash
+# Clone the repository
+git clone https://github.com/username/{{ module_name }}.git
+cd {{ module_name }}
+```
+
+### Option 1: uv
+
+```bash
+# uv sync automatically creates the .venv and installs dependencies from pyproject.toml
+uv sync
+source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`, or run via WSL2 terminal
+```
+
+### Option 2: Standard pip (venv)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`, or run via WSL2 terminal
+pip install .              # Installs dependencies listed in pyproject.toml
+```
+
+### Option 3: Poetry
+
+```bash
+poetry install
+poetry shell
+```
+
+## Usage
+
+*Explain how to run the project.{% if modeling %} Provide examples of the commands needed to run data pipelines, training scripts, or start up applications/dashboards.{% endif %}*
+
+{% if 'notebooks' in structure -%}
+Start with `notebooks/data_processing_notebook.ipynb` to clean and validate the data{% if 'reports' in structure %}, logging changes in `reports/cleaning_log.md` as you go{% endif %}.
+Move to `notebooks/data_analysis_notebook.ipynb` for exploratory analysis{% if 'reports' in structure %}, then write up findings in `reports/REPORT.md`{% endif %}.
+
+{% endif -%}
+The package lives under `src/{{ module_name }}/` using an src layout. Once you've run `uv sync`, it installs in editable mode, so it's importable from notebooks and scripts anywhere in the project without extra path setup.
+{%- if 'data' in structure or 'models' in structure %}
+
+```bash
+{% if 'data' in structure -%}
+# Example: run the data ingestion pipeline (add src/{{ module_name }}/data/make_dataset.py)
+uv run python -m {{ module_name }}.data.make_dataset
+{% endif -%}
+{% if 'models' in structure -%}
+# Example: train the model (add src/{{ module_name }}/models/train_model.py)
+uv run python -m {{ module_name }}.models.train_model
+{% endif -%}
+```
+{%- endif %}
+
+## Methodology
+
+*Briefly describe the {{ 'data science' if modeling else 'data analysis' }} lifecycle for this project:*
+
+1. **Data Cleaning & Preprocessing:** How was the data prepared and cleaned?
+2. **Exploratory Data Analysis (EDA):** What were the key findings and distributions?
+{% if modeling -%}
+3. **Feature Engineering:** What new features were created or transformed?
+4. **Modeling:** Which algorithms were evaluated? How were hyperparameters tuned?
+5. **Evaluation:** What metrics were used (e.g., RMSE, F1-score, ROC-AUC) to validate the model?
+{% else -%}
+3. **Evaluation:** What metrics or comparisons were used to validate the findings?
+{% endif %}
+## Results
+
+*Summarize the final results of the {{ 'analysis or model' if modeling else 'analysis' }}. Include key metrics, business insights, and potentially a visual representation{% if 'reports' in structure %} (e.g., a link to {{ 'a confusion matrix or feature importance plot' if modeling else 'a chart' }} in `reports/`){% endif %}.*
+
+{% if 'semgrep' in tooling -%}
+## Security Scanning
+
+[Semgrep](https://semgrep.dev) scans every pull request and push to `main` (`.github/workflows/semgrep.yml`).
+
+Create a token at [semgrep.dev](https://semgrep.dev/orgs/-/settings/tokens) and add it as a repository secret:
+
+```bash
+gh secret set SEMGREP_APP_TOKEN
+```
+
+{% endif -%}
+## Contributing
+
+*Guidelines for how others can contribute to the project.*
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m '{{ 'feat: add AmazingFeature' if 'releases' in tooling else 'Add some AmazingFeature' }}'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+{%- if 'github_actions' in tooling %}
+
+### Commits and PRs
+
+Pull requests must pass these checks:
+
+* **`lint` and `tests`**: ruff and pytest must pass.
+{%- if 'releases' in tooling %}
+* **Commit lint**: every non-merge commit subject must be a [Conventional Commit](https://www.conventionalcommits.org/), `type(scope)!: description`, with `type` one of `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`, or `revert`. release-please versions from the same messages: `feat` bumps the minor version, `fix` the patch, and `!` or a `BREAKING CHANGE:` footer the major.
+{%- endif %}
+{%- if 'semgrep' in tooling %}
+* **Semgrep**: any finding fails the PR ([Security Scanning](#security-scanning)).
+{%- endif %}
+{%- if 'releases' in tooling %}
+
+Squash merges replace a PR's commits with one commit titled after the PR, which the commit lint never checks. If you squash, give the PR a Conventional Commit title.
+{%- endif %}
+{%- endif %}
+
+## License
+
+MIT License
+
+Copyright (c) 2026
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
