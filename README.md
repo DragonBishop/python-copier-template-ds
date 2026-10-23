@@ -136,7 +136,7 @@ which installs [Copier](https://github.com/copier-org/copier), [copier-template-
 * `uv run yamllint .` lints this repository's own YAML: workflows, issue templates, and `copier.yml`.
 * `uv run j2lint template -i jinja-statements-delimiter single-statement-per-line jinja-statements-indentation` lints the Jinja templates under `template/`.
 
-CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, plus renders every `ctt.toml` variant and runs `ruff`/`pytest` against the rendered output. `semgrep.yml` scans the repo on PRs, pushes to `data`, and manual runs.
+CI (`.github/workflows/lint.yml` and `test-template.yml`) runs the same checks, plus renders every `ctt.toml` variant and runs `ruff`/`pytest` against the rendered output. `semgrep.yml` scans the repo on PRs, pushes to `main`, and manual runs.
 
 ---
 
