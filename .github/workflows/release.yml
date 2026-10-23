@@ -2,7 +2,7 @@ name: release
 
 on:
   push:
-    branches: [data]
+    branches: [main]
   pull_request:
 
 permissions:
