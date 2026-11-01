@@ -1,3 +1,15 @@
+## [2.3.0](https://github.com/DragonBishop/python-copier-template-ds/compare/v2.2.0...v2.3.0) - 2026-11-01
+
+### 🚀 Features
+
+- *(renovate)* Add grouping for GitHub Actions updates in Renovate config ([061c2d3](https://github.com/DragonBishop/python-copier-template-ds/commit/061c2d34c807951ae1f578b88ad702ad16ff0710))
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update github actions ([26fb004](https://github.com/DragonBishop/python-copier-template-ds/commit/26fb0040f65c0b99d4612d19b0cc297c701274b7))
+- *(deps)* Update dependency ipykernel to v7 ([41bf0ad](https://github.com/DragonBishop/python-copier-template-ds/commit/41bf0ad6d1e073d24406115730d08317ce488ace))
+- *(deps)* Update template dependencies ([fc7b0e7](https://github.com/DragonBishop/python-copier-template-ds/commit/fc7b0e75f62e58d1aaaccbbc0b140c76055d46c7))
+
 ## [2.2.0](https://github.com/DragonBishop/python-copier-template-ds/compare/v2.1.0...v2.2.0) - 2026-10-23
 
 ### 🚀 Features
