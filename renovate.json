@@ -56,6 +56,13 @@
       "groupName": "template dependencies"
     },
     {
+      "description": "One weekly PR for all GitHub Actions updates, including majors and digests",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "groupSlug": "github-actions",
+      "separateMajorMinor": false
+    },
+    {
       "description": "Keep the Python default and .python-version in lockstep",
       "matchDepNames": ["python"],
       "groupName": "python version"
