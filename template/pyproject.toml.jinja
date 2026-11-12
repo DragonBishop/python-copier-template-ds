@@ -19,15 +19,15 @@ dynamic = ["version"]
 
 [dependency-groups]
 dev = [
-  "pytest>=9.1.1",
+  "pytest>=9.2.0",
   "pytest-cov>=7.1.0",
 {%- if 'notebooks' in structure %}
   "nbwipers>=0.7.2",
 {%- endif %}
-  "prek>=0.5.7",
+  "prek>=0.5.10",
 ]
 lint = [
-  "ruff>=0.17.2",
+  "ruff>=0.17.4",
 ]
 
 [build-system]
