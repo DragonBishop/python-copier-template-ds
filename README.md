@@ -35,7 +35,8 @@ These `copier.yml` questions shape the generated project's structure:
 
 | Question | Type | Default | Effect |
 | --- | --- | --- | --- |
-| `project_name` | `str` | none | Proper Case, e.g. `My Project`. Used as-is in titles; its snake_case form (`my_project`) names the package, module, and repo. |
+| `project_name` | `str` | none | Proper Case, e.g. `My Project` or `2026 Oil Crisis`. Used as-is in titles; its snake_case form (`my_project`) names the package, module, and repo. |
+| `module_name` | `str` | snake_case `project_name` | Asked only when the snake_case form isn't a valid module name, e.g. `2026_oil_crisis`. Lowercase letters, digits, and underscores, not starting with a digit. |
 | `structure` | multi-select | `data`, `visualization`, `notebooks`, `reports` | `data`/`visualization`/`features`/`models` add subpackages to `src/{{module_name}}/`; `features` or `models` switch the README to data-science wording. `notebooks` adds starter notebooks; `reports` adds a write-up, cleaning log, and `figures/`. |
 | `python_version` | `str` | `3.14.7` | Pinned in `.python-version` and `requires-python`. |
 | `tooling` | multi-select | `github_actions`, `releases`, `rumdl`, `renovate` | `github_actions`: lint/test workflows. `releases`: release-please + git-cliff, plus commit lint ([Commits and PRs](#commits-and-prs)). `rumdl`: markdown linting. `renovate`: weekly dependency PRs ([Renovate app](https://github.com/apps/renovate) required; Python patches only). `semgrep`: Semgrep scan on pushes, PRs, and manual runs with your Semgrep AppSec Platform policies (`SEMGREP_APP_TOKEN` secret required). `pypi`: publishes to PyPI when a release is published. `releases` and `semgrep` need `github_actions`; `pypi` needs `releases`. |

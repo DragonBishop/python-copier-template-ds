@@ -6,15 +6,20 @@ project_name:
   type: str
   help: Project name (Proper Case)
   validator: >-
-    {% if not (project_name | regex_search('^[A-Z][A-Za-z0-9]*( [A-Z0-9][A-Za-z0-9]*)*$')) %}
-    Use Proper Case words separated by spaces, e.g. My Project.
+    {% if not (project_name | regex_search('^[A-Z0-9][A-Za-z0-9]*( [A-Z0-9][A-Za-z0-9]*)*$')) %}
+    Use Proper Case, e.g. My Project.
     {% endif %}
 
-# snake_case form: package, module, repo name.
+# snake_case form: package, module, repo name. Asked only when the derived form isn't a valid module name.
 module_name:
   type: str
-  when: false
+  help: Module name (snake_case, must not start with a digit)
   default: "{{ project_name | lower | replace(' ', '_') }}"
+  when: "{{ not (project_name | lower | replace(' ', '_') | regex_search('^[a-z_][a-z0-9_]*$')) }}"
+  validator: >-
+    {% if not (module_name | regex_search('^[a-z_][a-z0-9_]*$')) %}
+    Use snake_case, not starting with a digit.
+    {% endif %}
 
 structure:
   type: str
