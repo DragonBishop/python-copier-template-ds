@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/DragonBishop/python-copier-template-ds/compare/v2.3.1...v2.3.2) - 2026-11-24
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update template dependencies ([51f3d40](https://github.com/DragonBishop/python-copier-template-ds/commit/51f3d4066da4bff45795f7f82a1c24b94a7e47ac))
+- *(deps)* Update github actions ([1b5b688](https://github.com/DragonBishop/python-copier-template-ds/commit/1b5b6887fca15c25e8067fcc3d4cec676957dc32))
+
 ## [2.3.1](https://github.com/DragonBishop/python-copier-template-ds/compare/v2.3.0...v2.3.1) - 2026-11-15
 
 ### 🐛 Bug Fixes
